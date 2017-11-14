@@ -1,17 +1,19 @@
 ﻿using System;
 using System.IO;
 using Microsoft.VisualBasic.FileIO;
-using OfficeOpenXml;
+using Project1;
 
 namespace Project1
 {
+
     public class Subject
     {
-        //make all data private, put print into Subject.cs, ENCAPUSLATION
 
-        static String distanceOutputFile = "/Users/nicholassallinger/HERL/RawData/Output/JointDistance.csv";
-        static String variableOutputFile = "/Users/nicholassallinger/HERL/RawData/Output/Variables.csv";
-        static String TAIOutputFile = "/Users/nicholassallinger/HERL/RawData/Output/TAIScores.csv";
+        //Output directory
+        static String distanceOutputFile = @"C:\Users\Kinect\Desktop\KinectFiles/Output/JointDistance.csv";
+        static String variableOutputFile = @"C:\Users/Kinect/Desktop/KinectFiles/Output/Variables.csv";
+        static String TAIOutputFile = @"C:/Users/Kinect/Desktop/KinectFiles/Output/TAIScores.csv";
+        static String comparisonOutputFile = @"C:/Users/Kinect/Desktop/KinectFiles/Output/TAIComparison.csv";
 
 
 
@@ -27,28 +29,48 @@ namespace Project1
         private String staticFile;
         private int startFrame;
         private int endFrame;
+        private int tempTestNum;
+
+        //Joint movement fields
         private double spineBase_x;
-        private double spineBase_y;
+        private double spineBase_y_trail;
         private double hipLeft_x;
-        private double hipLeft_y;
+        private double hipLeft_y_trail;
         private double hipRight_x;
-        private double hipRight_y;
-        private double kneeLeftDistance;
-        private double kneeRightDistance;
-        private double spineBase_y_maxmin;
-        private double hipRight_maxmin; //WRONG
-        private double hipLeft_maxmin; //WRONG
-        private double footLeftDistance;
-        private double footRightDistance;
-        private double ankleLeftDistance;
-        private double ankleRightDistance;
-        private double hipLeftDistance;
-        private double hipRightDistance;
-        private double spineDistance;
+        private double hipRight_y_trail;
+        private double kneeLeftDistanceTransfer;
+        private double kneeRightDistanceTransfer;
+        private double spineBase_y_maxmin_transfer;
+        private double hipRight_maxmin_transfer;
+        private double hipLeft_maxmin_transfer;
+        private double footLeftDistanceTransfer;
+        private double footRightDistanceTransfer;
+        private double ankleLeftDistanceTransfer;
+        private double ankleRightDistanceTransfer;
+        private double hipLeftDistanceTransfer;
+        private double hipRightDistanceTransfer;
+        private double spineDistanceTransfer;
         private double hipAngleAtMin;
         private double hipAngleAtMax;
         private double shoulderAngleAtMin;
         private double shoulderAngleAtMax;
+        private double kneeLeftDistanceSetting;
+        private double kneeRightDistanceSetting;
+        private double footLeftDistanceSetting;
+        private double footRightDistanceSetting;
+        private double ankleLeftDistanceSetting;
+        private double ankleRightDistanceSetting;
+        private double hipLeftDistanceSetting;
+        private double hipRightDistanceSetting;
+        private double spineDistanceSetting;
+        private double hipAngleStart_setting;
+        private double shoulderAngleStart_setting;
+        private double hipAngleatEnd_setting;
+        private double shoulderAngleatEnd_setting;
+
+        //Joint distance fields, if it starts as manual it is taken in as a param from .txt
+        //others set with methods
+
         private double rightHandTipSize;
         private double leftHandTipSize;
         private double rightHandThumbSize;
@@ -67,100 +89,97 @@ namespace Project1
         private double leftFootLength;
         private double mass;
         private double height;
-        private double chestCircumference;
-        private double waistCircumference;
         private double trunkLength;
-        private double wheelchairHeight;
+        private double manualRUA_Length;
+        private double manualLUA_Length;
+        private double manualR_Forearm_Length;
+        private double manualL_Forearm_Length;
+        private double manualChestCircumference;
+        private double manualWaistCircumference;
+        private double manualTrunkLength;
+        private double manualR_Thigh_Length;
+        private double manualL_Thigh_Length;
+        private double manualR_Leg_Length;
+        private double manualL_Leg_Length;
+        private double manualR_Foot_Length;
+        private double manualL_Foot_Length;
+        private double manualWheelchairHeight;
 
-        private static double CutValue1_1 = 0.5;
+        //TAI FIELDS
+        /*
+         * CUT VALUES ARE CHANGED HERE
+         */
+        private static double CutValue1_1 = 0.9;
         private static double CutValue1_2 = 0.5;
-        private static double CutValue1_3 = 0.5;
-        private static double CutValue1_6 = -0.761;
-        private static double CutValue1_7 = 1.67;
-
-        private double TAI1_1;
-        private double TAI1_2;
-        private double TAI1_3;
-        private double TAI1_6;
-        private double TAI1_7;
-
-        //These public getters arent really necessary, just something I thought I might need but never did
-        public double ShoulderAngleAtMax { get => ShoulderAngleAtMax; }
-        public double ShoulderAngleAtMin { get => shoulderAngleAtMin; }
-        public string SubjectNum { get => subjectNum; }
-        public string TestNum { get => testNum; }
-        public double SpineBase_x { get => spineBase_x; }
-        public double SpineBase_y { get => spineBase_y; }
-        public double HipLeft_x { get => hipLeft_x; }
-        public double HipLeft_y { get => hipLeft_y; }
-        public double HipRight_x { get => hipRight_x; }
-        public double HipRight_y { get => hipRight_y; }
-        public double KneeLeftDistance { get => kneeLeftDistance; }
-        public double HipAngleAtMax { get => hipAngleAtMax; }
-        public double HipAngleAtMin { get => hipAngleAtMin; }
-        public double FootRightDistance { get => footRightDistance; }
-        public double HipRightDistance { get => hipRightDistance; }
-        public double KneeRightDistance { get => kneeRightDistance; }
-        public double SpineBase_y_maxmin { get => spineBase_y_maxmin; }
-        public double HipRight_maxmin { get => hipRight_maxmin; }
-        public double AnkleLeftDistance { get => ankleLeftDistance; }
-        public double HipLeft_maxmin { get => hipLeft_maxmin; }
-        public double HipLeftDistance { get => hipLeftDistance; }
-        public double FootLeftDistance { get => footLeftDistance; }
-        public double AnkleRightDistance { get => ankleRightDistance; }
-        public double RightHandTipSize { get => rightHandTipSize; }
-        public double LeftHandTipSize { get => leftHandTipSize; }
-        public double RightHandThumbSize { get => rightHandThumbSize; }
-        public double LeftHandThumbSize { get => leftHandThumbSize; }
+        private static double CutValue1_3 = 0.84;
+        private static double CutValue1_6 = .77;
+        private static double CutValue1_7 = .918;
+        private static double CutValue1_1Calculated = 0.79;
+        private static double CutValue1_2Calculated = 0.91;
+        private static double CutValue1_3Calculated = 0.74;
+        private static double CutValue1_6Calculated = .5;
+        private static double CutValue1_7Calculated = .85;
 
 
-        //Used when there is no data for start and end frames
-        public Subject(String directory) : this(directory, 0, 0)
+        //Output of TAI calculations
+        private int TAI1_1;
+        private int TAI1_2;
+        private int TAI1_3;
+        private int TAI1_6;
+        private int TAI1_7;
+        private int calculatedTAI1_1;
+        private int calculatedTAI1_2;
+        private int calculatedTAI1_3;
+        private int calculatedTAI1_6;
+        private int calculatedTAI1_7;
+
+        //struct passed in with anthropometric data
+        public Subject(String directory, String staticFile, MainCLS.AnthroData anthroData)
         {
+            startFrame = anthroData.start;
+            endFrame = anthroData.end;
 
-        }
-
-        public Subject(String directory, int start, int end)
-        {
-            startFrame = start;
-            endFrame = end;
             this.directory = directory;
+            this.staticFile = staticFile;
+            this.tempTestNum = anthroData.testNum;
+            this.mass = anthroData.mass;
+            this.height = anthroData.height;
+            this.manualRUA_Length = anthroData.RUA_Length;
+            this.manualLUA_Length = anthroData.LUA_Length;
+            this.manualR_Forearm_Length = anthroData.R_Forearm_Length;
+            this.manualL_Forearm_Length = anthroData.L_Forearm_Length;
+            this.manualChestCircumference = anthroData.chestCircumference;
+            this.manualWaistCircumference = anthroData.waistCircumference;
+            this.manualTrunkLength = anthroData.trunkLength;
+            this.manualR_Thigh_Length = anthroData.R_Thigh_Length;
+            this.manualL_Thigh_Length = anthroData.L_Thigh_Length;
+            this.manualR_Leg_Length = anthroData.R_Leg_Length;
+            this.manualL_Leg_Length = anthroData.L_Leg_Length;
+            this.manualR_Foot_Length = anthroData.R_Foot_Length;
+            this.manualL_Foot_Length = anthroData.L_Foot_Length;
+            this.manualWheelchairHeight = anthroData.wheelchairHeight;
             Initialize();
 
         }
 
-		public Subject(String directory, String staticFile, int start, int end, double mass, double height, double chestCircumference, double waistCircumference, double trunkLength, double wheelchairHeight)
-		{
-			startFrame = start;
-			endFrame = end;
-			this.directory = directory;
-            this.staticFile = staticFile;
-            this.mass = mass;
-            this.height = height;
-            this.chestCircumference = chestCircumference;
-            this.waistCircumference = waistCircumference;
-            this.trunkLength = trunkLength;
-            this.wheelchairHeight = wheelchairHeight;
-			Initialize();
-		}
-
         private void Initialize()
         {
+            Console.WriteLine("Static File = " + staticFile);
             data = ParseCSV(directory);
             staticData = ParseStaticCSV(staticFile);
-
-            //SetupOutputFiles();
-
             subjectNum = GetSubjectNumber();
             testNum = GetTestNumber();
-            spineBase_x = CalculateSpineBaseX();
-            spineBase_y = CalculateSpineBaseY();
-            hipLeft_x = CalculateHipLeftX();
-            hipLeft_y = CalculateHipLeftY();
-            hipRight_x = CalculateHipRightX();
-            hipRight_y = CalculateHipRightY();
+            //if (Convert.ToInt32(testNum) != tempTestNum)
+            //{
+            //    Console.WriteLine("DATA MISALIGNED IN SUBJECT");
+            //}
 
-            if (staticFile != null)
+            CalculateStartFrame();
+
+
+            //only do measurements once per subject, must ensure that there is a corresponding transfer 1
+            /*
+            if ((staticFile != null) & Convert.ToInt32(testNum) == 1)
             {
                 rightUpperArmLength = CalculateRightUpperArmLength();
                 leftUpperArmLength = CalculateLeftUpperArmLength();
@@ -174,26 +193,51 @@ namespace Project1
                 leftLegLength = CalculateLeftLegLength();
                 rightFootLength = CalculateRightFootLength();
                 leftFootLength = CalculateLeftFootLength();
+                trunkLength = CalculateTrunkLength();
             }
 
+            //if start = end, dont do frame data			
             if (startFrame != 0 && endFrame != 0)
             {
-                kneeLeftDistance = CalculateKneeLeftDistance(startFrame, endFrame);
-                kneeRightDistance = CalculateKneeRightDistance(startFrame, endFrame);
-                footLeftDistance = CalculateFootLeftDistance(startFrame, endFrame);
-                footRightDistance = CalculateFootRightDistance(startFrame, endFrame);
-                ankleLeftDistance = CalculatAnkleLeftDistance(startFrame, endFrame);
-                ankleRightDistance = CalculateAnkleRightDistance(startFrame, endFrame);
-                shoulderAngleAtMin = CalculateShoulderAngleAtMin(startFrame, endFrame);
-                shoulderAngleAtMax = CalculateShoulderAngleAtMax(startFrame, endFrame);
-                hipAngleAtMin = CalculateHipAngleAtMin(startFrame, endFrame);
-                hipAngleAtMax = CalculateHipAngleAtMax(startFrame, endFrame);
-                hipRightDistance = CalculateHipRightDistance(startFrame, endFrame);
-                hipLeftDistance = CalculateHipLeftDistance(startFrame, endFrame);
-                hipLeft_maxmin = CalculateHipLeftMaxMin(startFrame, endFrame);
-                hipRight_maxmin = CalculateHipRightMaxMin(startFrame, endFrame);
-                spineBase_y_maxmin = CalculateSpineBaseYMaxMin(startFrame, endFrame);
-                spineDistance = CalculateSpineDistance(startFrame, endFrame);
+                spineBase_x = CalculateSpineBaseX();
+                spineBase_y_trail = CalculateSpineBaseY();
+                hipLeft_x = CalculateHipLeftX();
+                hipLeft_y_trail = CalculateHipLeftY();
+                hipRight_x = CalculateHipRightX();
+                hipRight_y_trail = CalculateHipRightY();
+
+                //setup phase
+                kneeLeftDistanceSetting = CalculateKneeLeftDistance(1, startFrame);
+                kneeRightDistanceSetting = CalculateKneeRightDistance(1, startFrame);
+                footLeftDistanceSetting = CalculateFootLeftDistance(1, startFrame);
+                footRightDistanceSetting = CalculateFootRightDistance(1, startFrame);
+                ankleLeftDistanceSetting = CalculatAnkleLeftDistance(1, startFrame);
+                ankleRightDistanceSetting = CalculateAnkleRightDistance(1, startFrame);
+                spineDistanceSetting = CalculateSpineDistance(1, startFrame);
+                hipRightDistanceSetting = CalculateHipRightDistance(1, startFrame);
+                hipLeftDistanceSetting = CalculateHipLeftDistance(1, startFrame);
+                hipAngleStart_setting = CalculateHipAngle(1);
+                shoulderAngleStart_setting = CalculateShoulderAngle(1);
+                hipAngleatEnd_setting = CalculateHipAngle(startFrame);
+                shoulderAngleatEnd_setting = CalculateShoulderAngle(startFrame);
+
+                //transfer phase
+                kneeLeftDistanceTransfer = CalculateKneeLeftDistance(startFrame, endFrame);
+                kneeRightDistanceTransfer = CalculateKneeRightDistance(startFrame, endFrame);
+                footLeftDistanceTransfer = CalculateFootLeftDistance(startFrame, endFrame);
+                footRightDistanceTransfer = CalculateFootRightDistance(startFrame, endFrame);
+                ankleLeftDistanceTransfer = CalculatAnkleLeftDistance(startFrame, endFrame);
+                ankleRightDistanceTransfer = CalculateAnkleRightDistance(startFrame, endFrame);
+                spineDistanceTransfer = CalculateSpineDistance(startFrame, endFrame);
+                hipRightDistanceTransfer = CalculateHipRightDistance(startFrame, endFrame);
+                hipLeftDistanceTransfer = CalculateHipLeftDistance(startFrame, endFrame);
+                shoulderAngleAtMin = CalculateShoulderAngle(startFrame);
+                shoulderAngleAtMax = CalculateShoulderAngle(endFrame);
+                hipAngleAtMin = CalculateHipAngle(startFrame);
+                hipAngleAtMax = CalculateHipAngle(endFrame);
+                hipLeft_maxmin_transfer = CalculateHipLeftMaxMin(startFrame, endFrame);
+                hipRight_maxmin_transfer = CalculateHipRightMaxMin(startFrame, endFrame);
+                spineBase_y_maxmin_transfer = CalculateSpineBaseYMaxMin(startFrame, endFrame);
                 rightHandTipSize = CalculateRightHandTipSize(startFrame, endFrame);
                 leftHandTipSize = CalculateLeftHandTipSize(startFrame, endFrame);
                 rightHandThumbSize = CalculateRightHandThumbSize(startFrame, endFrame);
@@ -201,24 +245,26 @@ namespace Project1
 
                 TAICalculations();
             }
+
             else
             {
                 //for if there is no frame data
-                kneeLeftDistance = 0;
-                kneeRightDistance = 0;
-                footLeftDistance = 0;
-                footRightDistance = 0;
-                ankleLeftDistance = 0;
-                ankleRightDistance = 0;
+                kneeLeftDistanceTransfer = 0;
+                kneeRightDistanceTransfer = 0;
+                footLeftDistanceTransfer = 0;
+                footRightDistanceTransfer = 0;
+                ankleLeftDistanceTransfer = 0;
+                ankleRightDistanceTransfer = 0;
                 shoulderAngleAtMin = 0;
                 shoulderAngleAtMax = 0;
                 hipAngleAtMin = 0;
                 hipAngleAtMax = 0;
-                hipRightDistance = 0;
-                hipLeftDistance = 0;
-                ankleLeftDistance = 0;
-                ankleRightDistance = 0;
+                hipRightDistanceTransfer = 0;
+                hipLeftDistanceTransfer = 0;
+                ankleLeftDistanceTransfer = 0;
+                ankleRightDistanceTransfer = 0;
             }
+            */
         }
 
         /// <summary>
@@ -230,7 +276,6 @@ namespace Project1
         {
             if (File.Exists(dir))
             {
-                //Console.WriteLine("File exists");
                 TextFieldParser rowParser = new TextFieldParser(dir);
                 while (!rowParser.EndOfData)
                 {
@@ -241,7 +286,6 @@ namespace Project1
             }
             else
             {
-                Console.WriteLine("File does not exist");
                 Environment.Exit(0);
             }
             data = new string[numRows][];
@@ -256,35 +300,40 @@ namespace Project1
             return data;
         }
 
+        /// <summary>
+        /// Parses the static csv to be used in joint distance measurements
+        /// </summary>
+        /// <returns>The static csv.</returns>
+        /// <param name="dir">location of file.</param>
 		private String[][] ParseStaticCSV(String dir)
-		{
-			if (File.Exists(dir))
-			{
-				//Console.WriteLine("File exists");
+        {
+            //Console.WriteLine("dir in parse = " + dir);
+            if (File.Exists(dir))
+            {
                 TextFieldParser rowParser = new TextFieldParser(dir);
-				while (!rowParser.EndOfData)
-				{
-					rowParser.ReadLine();
-					numRowsStatic++;
-				}
-				rowParser.Close();
-			}
-			else
-			{
-				Console.WriteLine("Static file does not exist");
-				Environment.Exit(0);
-			}
-			staticData = new string[numRowsStatic][];
+                while (!rowParser.EndOfData)
+                {
+                    rowParser.ReadLine();
+                    numRowsStatic++;
+                }
+                rowParser.Close();
+            }
+            else
+            {
+                Console.WriteLine("Static file does not exist");
+                Environment.Exit(0);
+            }
+            staticData = new string[numRowsStatic][];
             TextFieldParser parser = new TextFieldParser(dir);
-			parser.SetDelimiters(",");
-			parser.TrimWhiteSpace = true;
-			for (int i = 0; i < numRowsStatic; i++)
-			{
-				String[] temp = parser.ReadFields();
-				staticData[i] = temp;
-			}
-			return staticData;
-		}
+            parser.SetDelimiters(",");
+            parser.TrimWhiteSpace = true;
+            for (int i = 0; i < numRowsStatic; i++)
+            {
+                String[] temp = parser.ReadFields();
+                staticData[i] = temp;
+            }
+            return staticData;
+        }
 
 
         /// <summary>
@@ -305,7 +354,16 @@ namespace Project1
                     break;
                 }
             }
-            String returnString = subInfo[subIndex].ToString() + subInfo[subIndex+1].ToString();
+            Console.WriteLine("SubjectNumber = " + subInfo[subIndex] + subInfo[subIndex + 1]);
+
+            String returnString = subInfo[subIndex].ToString() + subInfo[subIndex + 1].ToString();
+
+            //Frame data is incorrect
+            if (startFrame >= endFrame)
+            {
+                returnString = returnString + "*";
+
+            }
             //Console.WriteLine("Subject Number: {0}", returnString);
             return returnString;
         }
@@ -321,14 +379,15 @@ namespace Project1
             char[] testInfo = directory.ToCharArray();
             int testIndex = 0;
 
-            for (int i = 0; i < testInfo.Length; i++)
+            for (int i = 50; i < testInfo.Length; i++)
             {
                 if (testInfo[i].Equals('B'))
                 {
                     testIndex = i + 1;
+                    break;
                 }
             }
-
+            Console.WriteLine("Test Number = " + testInfo[testIndex] + testInfo[testIndex + 1]);
             String returnString = testInfo[testIndex].ToString() + testInfo[testIndex + 1].ToString();
             //Console.WriteLine("Test number: {0}",returnString);
 
@@ -336,24 +395,60 @@ namespace Project1
             //return "no";
         }
 
-        public static void SetupOutputFiles(){
-            System.IO.StreamWriter jointwr = new System.IO.StreamWriter(distanceOutputFile,true);
-			jointwr.WriteLine("SubjectNum, Test number, rightHandTipSize, leftHandTipSize, rightHandThumbSize," +
-			   "LeftHandThumbSize, RightUpperArmLength,LeftUpperArmLength, RightForearmLength, LeftForearmLength," +
-			   "ShoulderLength, HipLength, RightThighLength, LeftThighLength, RightLegLength," +
-			   "LeftLegLength, RightFootLength, LeftFootLength");
+        /// <summary>
+        /// Initialize output files
+        /// </summary>
+        public static void SetupOutputFiles()
+        {
+            if (File.Exists(distanceOutputFile))
+            {
+                File.Delete(distanceOutputFile);
+            }
+            System.IO.StreamWriter jointwr = new System.IO.StreamWriter(distanceOutputFile, true);
+            jointwr.WriteLine("Subject ID, rightHandTipSize, leftHandTipSize, rightHandThumbSize," +
+               "LeftHandThumbSize, R_UA,L_UA, R_FA, L_FA," +
+               "2xShoulder, 2xhip, R_th, L_th, R_Lg," +
+               "L_lg, R_ft, L_ft, Trunk_Length");
+
+
             jointwr.Close();
-            System.IO.StreamWriter varwr = new System.IO.StreamWriter(variableOutputFile,true);
-			varwr.WriteLine("SpineBase_X, SpineBase_Y, HipLeft_X," +
-						   "HipLeft_Y, HipRight_X, HipRight_Y, SpineBase_Y_maxmin, hipRight_maxmin," +
-						   "HipLeft_maxmin, kneeLeftDistance, kneeRightDistance,footLeftDistance, FootRightDistance," +
-						   "ankleLeftDistance, ankleRightDistance, hipLeftDistance, hipRightDistance,spineDistance," +
-						   "hipAngleAtMin, hipAngleAtMax, shoulderAngleAtMin, shoulderAngleAtMax");
+            if (File.Exists(variableOutputFile))
+            {
+                File.Delete(variableOutputFile);
+            }
+            System.IO.StreamWriter varwr = new System.IO.StreamWriter(variableOutputFile, true);
+            //varwr.WriteLine("Subject ID, Test Number, Dx_SpineBase_X, SpineBase_Y_trail, HipLeft_X," +
+            //"HipLeft_Y_trail, HipRight_X, HipRight_Y_trail, SpineBase_Y_maxmin_transfer, hipRight_maxmin_transfer," +
+            //"HipLeft_maxmin_transfer, kneeLeftDistance, kneeRightDistance,footLeftDistance, FootRightDistance," +
+            //"ankleLeftDistance, ankleRightDistance, hipLeftDistance, hipRightDistance,spineDistance," +
+            //"hipAngleAtMin, hipAngleAtMax, shoulderAngleAtMin, shoulderAngleAtMax");
+
+
+            varwr.WriteLine("SubjectNum,TestNum,spineBaseX, hipleftX, hipRightX, SpineBaseY_trail,HipLeftY_trail,HipRightY_trail,tKneeLeftDistance_setting,FootLeftDistance_setting," +
+                            "AnkleLeftDistance_setting,HipLeftDistance_setting,SpineDistance_setting,HipAngleStart_setting,ShoulderAngleStart_setting," +
+                            "KneeRightDistance_setting,FootRightDistance_setting,AnkleRightDistance_setting,HipRightDistance_setting,HipAngleatEnd_setting," +
+                            "ShoulderAngleatEnd_setting,SpineBaseYMax_Min_transfer,HipRightYMax_Min_transfer,HipLeftYMax_Min_transfer");
+
+
             varwr.Close();
-            System.IO.StreamWriter taiwr = new System.IO.StreamWriter(TAIOutputFile,true);
-			taiwr.WriteLine("SubjectNum, Test number, TAI1_1, TAI1_2,TAI1_3," +
-						   " TAI1_6,TAI1_7");
-			taiwr.Close();
+            if (File.Exists(TAIOutputFile))
+            {
+                File.Delete(TAIOutputFile);
+            }
+            System.IO.StreamWriter taiwr = new System.IO.StreamWriter(TAIOutputFile, true);
+            taiwr.WriteLine("SubjectNum, Test number, TAI1_1, TAI1_2,TAI1_3," +
+                           " TAI1_6,TAI1_7");
+            taiwr.Close();
+
+            if (File.Exists(comparisonOutputFile))
+            {
+                File.Delete(comparisonOutputFile);
+            }
+            System.IO.StreamWriter compwr = new System.IO.StreamWriter(comparisonOutputFile, true);
+            compwr.WriteLine("SubjectNum, Test number, TAI1_1, Calculated TAI1_1, " +
+                            "TAI1_2,CalcualteTAI1_2,TAI1_3, CalculatedTAI1_3," +
+                           " TAI1_6,CalcualteTAI1_6,TAI1_7,CalcualteTAI1_7");
+            compwr.Close();
 
         }
 
@@ -361,346 +456,325 @@ namespace Project1
          * ANTHROPOMETRIC CALCULATIONS
          ******************************/
 
-        private double CalculateRightUpperArmLength(){
-            //26-29, 27-30,28-31
+        private double CalculateRightUpperArmLength()
+        {
+            //columns 26-29, 27-30,28-31
             double total = 0;
-          
+
             for (int i = 1; i < numRowsStatic; i++)
             {
                 total = total + Math.Sqrt(Math.Pow(Convert.ToDouble(staticData[i][26]) - Convert.ToDouble(staticData[i][29]), 2) +
                                   Math.Pow(Convert.ToDouble(staticData[i][27]) - Convert.ToDouble(staticData[i][30]), 2) +
                                   Math.Pow(Convert.ToDouble(staticData[i][28]) - Convert.ToDouble(staticData[i][31]), 2));
-             
+
             }
-            return total/numRowsStatic;
+            //Console.WriteLine(total);
+            //Console.WriteLine(numRowsStatic);
+            return total / (numRowsStatic - 1);
 
         }
         private double CalculateLeftUpperArmLength()
-		{
-			////14-17
-			//SQRT((O2-R2)^2+(P2-S2)^2+(Q2-T2)^2)
-			double total = 0;
-		
-			for (int i = 1; i < numRowsStatic; i++)
-			{
-				total = total + Math.Sqrt(Math.Pow(Convert.ToDouble(staticData[i][14]) - Convert.ToDouble(staticData[i][17]), 2) +
-								  Math.Pow(Convert.ToDouble(staticData[i][15]) - Convert.ToDouble(staticData[i][18]), 2) +
-								  Math.Pow(Convert.ToDouble(staticData[i][16]) - Convert.ToDouble(staticData[i][19]), 2));
-
-			}
-			return total / numRowsStatic;
-
-		}
-		private double CalculateRightForearmLength()
-		{
-			//29-32
-			//=SQRT((AD2-AG2)^2+(AE2-AH2)^2+(AF2-AI2)^2)
-			double total = 0;
-
-			for (int i = 1; i < numRowsStatic; i++)
-			{
-				total = total + Math.Sqrt(Math.Pow(Convert.ToDouble(staticData[i][29]) - Convert.ToDouble(staticData[i][32]), 2) +
-								  Math.Pow(Convert.ToDouble(staticData[i][30]) - Convert.ToDouble(staticData[i][33]), 2) +
-								  Math.Pow(Convert.ToDouble(staticData[i][31]) - Convert.ToDouble(staticData[i][34]), 2));
-
-			}
-			return total / numRowsStatic;
-
-		}
-		private double CalculateLeftForearmLength()
-		{
-			//17-20
-			//= SQRT((R2 - U2) ^ 2 + (S2 - V2) ^ 2 + (T2 - W2) ^ 2)
-			double total = 0;
+        {
+            ////14-17
+            //SQRT((O2-R2)^2+(P2-S2)^2+(Q2-T2)^2)
+            double total = 0;
 
             for (int i = 1; i < numRowsStatic; i++)
-			{
-				total = total + Math.Sqrt(Math.Pow(Convert.ToDouble(staticData[i][17]) - Convert.ToDouble(staticData[i][20]), 2) +
-								  Math.Pow(Convert.ToDouble(staticData[i][18]) - Convert.ToDouble(staticData[i][21]), 2) +
-								  Math.Pow(Convert.ToDouble(staticData[i][19]) - Convert.ToDouble(staticData[i][22]), 2));
+            {
+                total = total + Math.Sqrt(Math.Pow(Convert.ToDouble(staticData[i][14]) - Convert.ToDouble(staticData[i][17]), 2) +
+                                  Math.Pow(Convert.ToDouble(staticData[i][15]) - Convert.ToDouble(staticData[i][18]), 2) +
+                                  Math.Pow(Convert.ToDouble(staticData[i][16]) - Convert.ToDouble(staticData[i][19]), 2));
 
-			}
-			
-			return total / numRowsStatic;
-
-		}
-		private double CalculateShoulderLength()
-		{
-			//14-26
-			//=2*SQRT((O2-AA2)^2+(P2-AB2)^2+(Q2-AC2)^2)
-			double total = 0;
-
-			for (int i = 1; i < numRowsStatic; i++)
-			{
-				total = total + 2*Math.Sqrt(Math.Pow(Convert.ToDouble(staticData[i][14]) - Convert.ToDouble(staticData[i][26]), 2) +
-								  Math.Pow(Convert.ToDouble(staticData[i][15]) - Convert.ToDouble(staticData[i][27]), 2) +
-								  Math.Pow(Convert.ToDouble(staticData[i][16]) - Convert.ToDouble(staticData[i][28]), 2));
-
-			}
-           
-			return total / numRowsStatic;
+            }
+            return total / (numRowsStatic - 1);
 
         }
-		private double CalculateHipLength()
-		{
-			//38-50
-			//=2*SQRT((AM2-AY2)^2+(AN2-AZ2)^2+(AO2-BA2)^2)
-			double total = 0;
+        private double CalculateRightForearmLength()
+        {
+            //29-32
+            //=SQRT((AD2-AG2)^2+(AE2-AH2)^2+(AF2-AI2)^2)
+            double total = 0;
 
-			for (int i = 1; i < numRowsStatic; i++)
-			{
-				total = total + 2*Math.Sqrt(Math.Pow(Convert.ToDouble(staticData[i][38]) - Convert.ToDouble(staticData[i][50]), 2) +
-								  Math.Pow(Convert.ToDouble(staticData[i][39]) - Convert.ToDouble(staticData[i][51]), 2) +
-								  Math.Pow(Convert.ToDouble(staticData[i][40]) - Convert.ToDouble(staticData[i][52]), 2));
+            for (int i = 1; i < numRowsStatic; i++)
+            {
+                total = total + Math.Sqrt(Math.Pow(Convert.ToDouble(staticData[i][29]) - Convert.ToDouble(staticData[i][32]), 2) +
+                                  Math.Pow(Convert.ToDouble(staticData[i][30]) - Convert.ToDouble(staticData[i][33]), 2) +
+                                  Math.Pow(Convert.ToDouble(staticData[i][31]) - Convert.ToDouble(staticData[i][34]), 2));
 
-			}
-			
-			return total / numRowsStatic;
+            }
+            return total / (numRowsStatic - 1);
 
-		}
-		private double CalculateRightThighLength()
-		{
-			//50-53
-			//=SQRT((AY2-BB2)/^2+(AZ2-BC2)^2+(BA2-BD2)^2)
-			double total = 0;
+        }
+        private double CalculateLeftForearmLength()
+        {
+            //17-20
+            //= SQRT((R2 - U2) ^ 2 + (S2 - V2) ^ 2 + (T2 - W2) ^ 2)
+            double total = 0;
 
-            for (int i = 1; i < numRowsStatic; i++){
-				total = total + Math.Sqrt(Math.Pow(Convert.ToDouble(staticData[i][50]) - Convert.ToDouble(staticData[i][53]), 2) +
-								  Math.Pow(Convert.ToDouble(staticData[i][51]) - Convert.ToDouble(staticData[i][54]), 2) +
-								  Math.Pow(Convert.ToDouble(staticData[i][52]) - Convert.ToDouble(staticData[i][55]), 2));
+            for (int i = 1; i < numRowsStatic; i++)
+            {
+                total = total + Math.Sqrt(Math.Pow(Convert.ToDouble(staticData[i][17]) - Convert.ToDouble(staticData[i][20]), 2) +
+                                  Math.Pow(Convert.ToDouble(staticData[i][18]) - Convert.ToDouble(staticData[i][21]), 2) +
+                                  Math.Pow(Convert.ToDouble(staticData[i][19]) - Convert.ToDouble(staticData[i][22]), 2));
 
-			}
-			
-            return total / numRowsStatic;
+            }
 
-		}
+            return total / (numRowsStatic - 1);
+
+        }
+        private double CalculateShoulderLength()
+        {
+            //14-26
+            //=2*SQRT((O2-AA2)^2+(P2-AB2)^2+(Q2-AC2)^2)
+            double total = 0;
+
+            for (int i = 1; i < numRowsStatic; i++)
+            {
+                total = total + 2 * Math.Sqrt(Math.Pow(Convert.ToDouble(staticData[i][14]) - Convert.ToDouble(staticData[i][26]), 2) +
+                                  Math.Pow(Convert.ToDouble(staticData[i][15]) - Convert.ToDouble(staticData[i][27]), 2) +
+                                  Math.Pow(Convert.ToDouble(staticData[i][16]) - Convert.ToDouble(staticData[i][28]), 2));
+
+            }
+
+            return total / (numRowsStatic - 1);
+
+        }
+        private double CalculateHipLength()
+        {
+            //38-50
+            //=2*SQRT((AM2-AY2)^2+(AN2-AZ2)^2+(AO2-BA2)^2)
+            double total = 0;
+
+            for (int i = 1; i < numRowsStatic; i++)
+            {
+                total = total + 2 * Math.Sqrt(Math.Pow(Convert.ToDouble(staticData[i][38]) - Convert.ToDouble(staticData[i][50]), 2) +
+                                  Math.Pow(Convert.ToDouble(staticData[i][39]) - Convert.ToDouble(staticData[i][51]), 2) +
+                                  Math.Pow(Convert.ToDouble(staticData[i][40]) - Convert.ToDouble(staticData[i][52]), 2));
+
+            }
+
+            return total / (numRowsStatic - 1);
+
+        }
+        private double CalculateRightThighLength()
+        {
+            //50-53
+            //=SQRT((AY2-BB2)/^2+(AZ2-BC2)^2+(BA2-BD2)^2)
+            double total = 0;
+
+            for (int i = 1; i < numRowsStatic; i++)
+            {
+                total = total + Math.Sqrt(Math.Pow(Convert.ToDouble(staticData[i][50]) - Convert.ToDouble(staticData[i][53]), 2) +
+                                  Math.Pow(Convert.ToDouble(staticData[i][51]) - Convert.ToDouble(staticData[i][54]), 2) +
+                                  Math.Pow(Convert.ToDouble(staticData[i][52]) - Convert.ToDouble(staticData[i][55]), 2));
+
+            }
+
+            return total / (numRowsStatic - 1);
+
+        }
         private double CalculateLeftThighLength()
-		{
-			//38-41
-			//=SQRT((AM2-AP2)^2+(AN2-AQ2)^2+(AO2-AR2)^2)
-			double total = 0;
+        {
+            //38-41
+            //=SQRT((AM2-AP2)^2+(AN2-AQ2)^2+(AO2-AR2)^2)
+            double total = 0;
 
-			for (int i = 1; i < numRowsStatic; i++)
-			{
-				total = total + Math.Sqrt(Math.Pow(Convert.ToDouble(staticData[i][38]) - Convert.ToDouble(staticData[i][41]), 2) +
-								  Math.Pow(Convert.ToDouble(staticData[i][39]) - Convert.ToDouble(staticData[i][42]), 2) +
-								  Math.Pow(Convert.ToDouble(staticData[i][40]) - Convert.ToDouble(staticData[i][43]), 2));
+            for (int i = 1; i < numRowsStatic; i++)
+            {
+                total = total + Math.Sqrt(Math.Pow(Convert.ToDouble(staticData[i][38]) - Convert.ToDouble(staticData[i][41]), 2) +
+                                  Math.Pow(Convert.ToDouble(staticData[i][39]) - Convert.ToDouble(staticData[i][42]), 2) +
+                                  Math.Pow(Convert.ToDouble(staticData[i][40]) - Convert.ToDouble(staticData[i][43]), 2));
 
-			}
-			
-			return total / numRowsStatic;
+            }
 
-		}
+            return total / (numRowsStatic - 1);
+
+        }
         private double CalculateRightLegLength()
-		{
-			//56-53
-			//=SQRT((BE2-BB2)^2+(BF2-BC2)^2+(BG2-BD2)^2)
-			double total = 0;
+        {
+            //56-53
+            //=SQRT((BE2-BB2)^2+(BF2-BC2)^2+(BG2-BD2)^2)
+            double total = 0;
 
-			for (int i = 1; i < numRowsStatic; i++)
-			{
-				total = total + Math.Sqrt(Math.Pow(Convert.ToDouble(staticData[i][56]) - Convert.ToDouble(staticData[i][53]), 2) +
-								  Math.Pow(Convert.ToDouble(staticData[i][57]) - Convert.ToDouble(staticData[i][54]), 2) +
-								  Math.Pow(Convert.ToDouble(staticData[i][58]) - Convert.ToDouble(staticData[i][55]), 2));
+            for (int i = 1; i < numRowsStatic; i++)
+            {
+                total = total + Math.Sqrt(Math.Pow(Convert.ToDouble(staticData[i][56]) - Convert.ToDouble(staticData[i][53]), 2) +
+                                  Math.Pow(Convert.ToDouble(staticData[i][57]) - Convert.ToDouble(staticData[i][54]), 2) +
+                                  Math.Pow(Convert.ToDouble(staticData[i][58]) - Convert.ToDouble(staticData[i][55]), 2));
 
-			}
-			
-			return total / numRowsStatic;
+            }
 
-		}
-		private double CalculateLeftLegLength()
-		{
-			//44-41
-			//=SQRT((AS2-AP2)^2+(AT2-AQ2)^2+(AU2-AR2)^2)
-			double total = 0;
+            return total / (numRowsStatic - 1);
 
-			for (int i = 1; i < numRowsStatic; i++)
-			{
-				total = total + Math.Sqrt(Math.Pow(Convert.ToDouble(staticData[i][44]) - Convert.ToDouble(staticData[i][41]), 2) +
-								  Math.Pow(Convert.ToDouble(staticData[i][45]) - Convert.ToDouble(staticData[i][42]), 2) +
-								  Math.Pow(Convert.ToDouble(staticData[i][46]) - Convert.ToDouble(staticData[i][43]), 2));
+        }
+        private double CalculateLeftLegLength()
+        {
+            //44-41
+            //=SQRT((AS2-AP2)^2+(AT2-AQ2)^2+(AU2-AR2)^2)
+            double total = 0;
 
-			}
-	
-			return total / numRowsStatic;
+            for (int i = 1; i < numRowsStatic; i++)
+            {
+                total = total + Math.Sqrt(Math.Pow(Convert.ToDouble(staticData[i][44]) - Convert.ToDouble(staticData[i][41]), 2) +
+                                  Math.Pow(Convert.ToDouble(staticData[i][45]) - Convert.ToDouble(staticData[i][42]), 2) +
+                                  Math.Pow(Convert.ToDouble(staticData[i][46]) - Convert.ToDouble(staticData[i][43]), 2));
 
-		}
-		private double CalculateRightFootLength()
-		{
-			//56-59
-			//=SQRT((BE2-BH2)^2+(BF2-BI2)^2+(BG2-BJ2)^2)
-			double total = 0;
+            }
 
-			for (int i = 1; i < numRowsStatic; i++)
-			{
-				total = total + Math.Sqrt(Math.Pow(Convert.ToDouble(staticData[i][56]) - Convert.ToDouble(staticData[i][59]), 2) +
-								  Math.Pow(Convert.ToDouble(staticData[i][57]) - Convert.ToDouble(staticData[i][60]), 2) +
-								  Math.Pow(Convert.ToDouble(staticData[i][58]) - Convert.ToDouble(staticData[i][61]), 2));
+            return total / (numRowsStatic - 1);
 
-			}
-			
-			return total / numRowsStatic;
+        }
+        private double CalculateRightFootLength()
+        {
+            //56-59
+            //=SQRT((BE2-BH2)^2+(BF2-BI2)^2+(BG2-BJ2)^2)
+            double total = 0;
 
-		}
+            for (int i = 1; i < numRowsStatic; i++)
+            {
+                total = total + Math.Sqrt(Math.Pow(Convert.ToDouble(staticData[i][56]) - Convert.ToDouble(staticData[i][59]), 2) +
+                                  Math.Pow(Convert.ToDouble(staticData[i][57]) - Convert.ToDouble(staticData[i][60]), 2) +
+                                  Math.Pow(Convert.ToDouble(staticData[i][58]) - Convert.ToDouble(staticData[i][61]), 2));
+
+            }
+
+            return total / (numRowsStatic - 1);
+
+        }
         private double CalculateLeftFootLength()
-		{
-			//44-47
-			//=SQRT((AS2-AV2)^2+(AT2-AW2)^2+(AU2-AX2)^2)
-			double total = 0;
+        {
+            //44-47
+            //=SQRT((AS2-AV2)^2+(AT2-AW2)^2+(AU2-AX2)^2)
+            double total = 0;
 
-			for (int i = 1; i < numRowsStatic; i++)
-			{
-				total = total + Math.Sqrt(Math.Pow(Convert.ToDouble(staticData[i][44]) - Convert.ToDouble(staticData[i][47]), 2) +
-								  Math.Pow(Convert.ToDouble(staticData[i][45]) - Convert.ToDouble(staticData[i][48]), 2) +
-								  Math.Pow(Convert.ToDouble(staticData[i][46]) - Convert.ToDouble(staticData[i][49]), 2));
+            for (int i = 1; i < numRowsStatic; i++)
+            {
+                total = total + Math.Sqrt(Math.Pow(Convert.ToDouble(staticData[i][44]) - Convert.ToDouble(staticData[i][47]), 2) +
+                                  Math.Pow(Convert.ToDouble(staticData[i][45]) - Convert.ToDouble(staticData[i][48]), 2) +
+                                  Math.Pow(Convert.ToDouble(staticData[i][46]) - Convert.ToDouble(staticData[i][49]), 2));
 
-			}
-			
-			return total / numRowsStatic; ;
+            }
 
-		}
+            return total / (numRowsStatic - 1); ;
 
-
+        }
         private double CalculateRightHandTipSize(int start, int end)
         {
             //RightHandTipSize = aj-bt + ak-bu + al-bv
             //35-71, 36-72, 37-73
-            double handX = 0;
-            double handTipX = 0;
-            double handY = 0;
-            double handTipY = 0;
-            double handZ = 0;
-            double handTipZ = 0;
 
-            for (int i = 1; i < numRowsStatic; i++) {
-                
-			handX = handX + Convert.ToDouble(staticData[i][35]);
-			handTipX = handTipX + Convert.ToDouble(staticData[i][71]);
-			handY = handY + Convert.ToDouble(staticData[i][36]);
-			handTipY = handTipY + Convert.ToDouble(staticData[i][72]);
-			handZ = handZ + Convert.ToDouble(staticData[i][37]);
-			handTipZ = handTipZ + Convert.ToDouble(staticData[i][73]);
-            
-            }
-
-
-            return Math.Sqrt(Math.Pow(handX/numRowsStatic - handTipY/numRowsStatic, 2) + Math.Pow(handY/numRowsStatic - handTipY/numRowsStatic, 2)
-							 + Math.Pow(handZ/numRowsStatic - handTipZ/numRowsStatic, 2));
-		}
-
-		private double CalculateLeftHandTipSize(int start, int end)
-		{
-			double handX = 0;
-			double handTipX = 0;
-			double handY = 0;
-			double handTipY = 0;
-			double handZ = 0;
-			double handTipZ = 0;
-
-
-			for (int i = 1; i < numRowsStatic; i++)
-			{
-				handX = handX + Convert.ToDouble(staticData[i][23]);
-				handTipX = handTipX + Convert.ToDouble(staticData[i][65]);
-				handY = handY + Convert.ToDouble(staticData[i][24]);
-				handTipY = handTipY + Convert.ToDouble(staticData[i][66]);
-				handZ = handZ + Convert.ToDouble(staticData[i][25]);
-				handTipZ = handTipZ + Convert.ToDouble(staticData[i][67]);
-			}
-
-            return Math.Sqrt(Math.Pow(handX/numRowsStatic - handTipY/numRowsStatic, 2) + Math.Pow(handY/numRowsStatic - handTipY/numRowsStatic, 2)
-                             + Math.Pow(handZ/numRowsStatic - handTipZ/numRowsStatic, 2));
-
-		}
-		private double CalculateRightHandThumbSize(int start, int end)
-		{
-
-			double handX = 0;
-			double thumbX = 0;
-			double handY = 0;
-			double thumbY = 0;
-			double handZ = 0;
-			double thumbZ = 0;
-
-
+            double total = 0;
             for (int i = 1; i < numRowsStatic; i++)
             {
-                handX = Convert.ToDouble(staticData[i][23]);
-                thumbX = Convert.ToDouble(staticData[i][65]);
-                handY = Convert.ToDouble(staticData[i][24]);
-                thumbY = Convert.ToDouble(staticData[i][66]);
-                handZ = Convert.ToDouble(staticData[i][25]);
-                thumbZ = Convert.ToDouble(staticData[i][67]);
+                total = total + Math.Sqrt(Math.Pow(Convert.ToDouble(staticData[i][35]) - Convert.ToDouble(staticData[i][71]), 2) +
+                                  Math.Pow(Convert.ToDouble(staticData[i][36]) - Convert.ToDouble(staticData[i][72]), 2) +
+                                  Math.Pow(Convert.ToDouble(staticData[i][37]) - Convert.ToDouble(staticData[i][73]), 2));
+
             }
 
-            return Math.Sqrt(Math.Pow(handX/numRowsStatic - thumbX/numRowsStatic, 2) + Math.Pow(handY/numRowsStatic - thumbY/numRowsStatic, 2)
-							 + Math.Pow(handZ/numRowsStatic - thumbZ/numRowsStatic, 2));
+            return total / (numRowsStatic - 1); ;
 
-		}
-		private double CalculateLeftHandThumbSize(int start, int end)
-		{
-			double handX = 0;
-			double thumbX = 0;
-			double handY = 0;
-			double thumbY = 0;
-			double handZ = 0;
-			double thumbZ = 0;
+        }
+        private double CalculateLeftHandTipSize(int start, int end)
+        {
 
-
+            double total = 0;
             for (int i = 1; i < numRowsStatic; i++)
             {
-                handX = Convert.ToDouble(staticData[i][23]);
-                thumbX = Convert.ToDouble(staticData[i][68]);
-                handY = Convert.ToDouble(staticData[i][24]);
-                thumbY = Convert.ToDouble(staticData[i][69]);
-                handZ = Convert.ToDouble(staticData[i][25]);
-                thumbZ = Convert.ToDouble(staticData[i][60]);
+                total = total + Math.Sqrt(Math.Pow(Convert.ToDouble(staticData[i][23]) - Convert.ToDouble(staticData[i][65]), 2) +
+                                  Math.Pow(Convert.ToDouble(staticData[i][24]) - Convert.ToDouble(staticData[i][66]), 2) +
+                                  Math.Pow(Convert.ToDouble(staticData[i][25]) - Convert.ToDouble(staticData[i][67]), 2));
+
             }
-			return Math.Sqrt(Math.Pow(handX/numRowsStatic - thumbX/numRowsStatic, 2) + Math.Pow(handY/numRowsStatic - thumbY/numRowsStatic, 2)
-								 + Math.Pow(handZ/numRowsStatic - thumbZ/numRowsStatic, 2)); ;
 
-		}
+            return total / (numRowsStatic - 1); ;
+
+        }
+        private double CalculateRightHandThumbSize(int start, int end)
+        {
+
+            double total = 0;
+            for (int i = 1; i < numRowsStatic; i++)
+            {
+                total = total + Math.Sqrt(Math.Pow(Convert.ToDouble(staticData[i][35]) - Convert.ToDouble(staticData[i][74]), 2) +
+                                  Math.Pow(Convert.ToDouble(staticData[i][36]) - Convert.ToDouble(staticData[i][75]), 2) +
+                                  Math.Pow(Convert.ToDouble(staticData[i][37]) - Convert.ToDouble(staticData[i][76]), 2));
+
+            }
+
+            return total / (numRowsStatic - 1); ;
+
+        }
+        private double CalculateLeftHandThumbSize(int start, int end)
+        {
+            double total = 0;
+            for (int i = 1; i < numRowsStatic; i++)
+            {
+                total = total + Math.Sqrt(Math.Pow(Convert.ToDouble(staticData[i][23]) - Convert.ToDouble(staticData[i][68]), 2) +
+                                  Math.Pow(Convert.ToDouble(staticData[i][24]) - Convert.ToDouble(staticData[i][69]), 2) +
+                                  Math.Pow(Convert.ToDouble(staticData[i][25]) - Convert.ToDouble(staticData[i][70]), 2));
+
+            }
+
+            return total / (numRowsStatic - 1); ;
+
+        }
+        private double CalculateTrunkLength()
+        {
+
+            double total = 0;
+            for (int i = 1; i < numRowsStatic; i++)
+            {
+                total = total + Math.Sqrt(Math.Pow(Convert.ToDouble(staticData[i][2]) - Convert.ToDouble(staticData[i][62]), 2) +
+                                  Math.Pow(Convert.ToDouble(staticData[i][3]) - Convert.ToDouble(staticData[i][63]), 2) +
+                                  Math.Pow(Convert.ToDouble(staticData[i][4]) - Convert.ToDouble(staticData[i][64]), 2));
+
+            }
+
+            return total / (numRowsStatic - 1); ;
+
+        }
 
 
-		/*******************************
+        /*******************************
         * MOTION CALCULATIONS
         ******************************/
 
 
-		/// <summary>
-		/// Calculates the spine base x.
-		/// </summary>
-		/// <returns>double spinebase_x</returns>
-		private double CalculateSpineBaseX()
-		{
-			double max = 0.0000;
-			double min = 0.0000;
-			//Spine Base X = "<>ToString[Max[ctotal]-Min[ctotal]]
-			//ctotal = Table[data[[3 + 77*(i - 1)]], {i, 2, Length[data]/77}];
-			//Console.WriteLine("row c = {0}",data[0][2]);
-			for (int i = 1; i < numRows; i++)
-			{
-				if (i == 1)
-				{
-					max = Convert.ToDouble(data[i][2]);
-					min = Convert.ToDouble(data[i][2]);
-				}
-				else
-				{
-					if (Convert.ToDouble(data[i][2]) >= max) { max = Convert.ToDouble(data[i][2]); }
-					if (Convert.ToDouble(data[i][2]) <= min) { min = Convert.ToDouble(data[i][2]); }
-				}
-			}
-			//Console.Write("spinebase_x = {0}", max-min);
-			return (max - min);
-		}
+        /// <summary>
+        /// Calculates the spine base x.
+        /// </summary>
+        /// <returns>double spinebase_x</returns>
+        private double CalculateSpineBaseX()
+        {
+            double max = 0.0000;
+            double min = 0.0000;
+            //Spine Base X = "<>ToString[Max[ctotal]-Min[ctotal]]
+            //ctotal = Table[data[[3 + 77*(i - 1)]], {i, 2, Length[data]/77}];
+            //Console.WriteLine("row c = {0}",data[0][2]);
+            for (int i = 1; i < numRows; i++)
+            {
+                if (i == 1)
+                {
+                    max = Convert.ToDouble(data[i][2]);
+                    min = Convert.ToDouble(data[i][2]);
+                }
+                else
+                {
+                    if (Convert.ToDouble(data[i][2]) >= max) { max = Convert.ToDouble(data[i][2]); }
+                    if (Convert.ToDouble(data[i][2]) <= min) { min = Convert.ToDouble(data[i][2]); }
+                }
+            }
+            //Console.Write("spinebase_x = {0}", max-min);
+            return (max - min);
+        }
 
 
-		/// <summary>
-		/// Calculates the spine base y.
-		/// </summary>
-		/// <returns>The spine base y.</returns>
-		private double CalculateSpineBaseY()
+        /// <summary>
+        /// Calculates the spine base y.
+        /// </summary>
+        /// <returns>The spine base y.</returns>
+        private double CalculateSpineBaseY()
         {
             double max = 0.0000;
             double min = 0.0000;
@@ -869,7 +943,7 @@ namespace Project1
             double min = 0.0000;
             for (int i = start; i < end; i++)
             {
-                if (i == 1)
+                if (i == start)
                 {
                     max = Convert.ToDouble(data[i][51]);
                     min = Convert.ToDouble(data[i][51]);
@@ -887,24 +961,24 @@ namespace Project1
         private double CalculateHipLeftMaxMin(int start, int end)
         {
             ////an max - an min
-            //double max = 0.0000;
-            //double min = 0.0000;
-            //for (int i = start; i < end; i++)
-            //{
-            //    if (i == 1)
-            //    {
-            //        max = Convert.ToDouble(data[i][39]);
-            //        min = Convert.ToDouble(data[i][39]);
-            //    }
-            //    else
-            //    {
-            //        if (Convert.ToDouble(data[i][39]) >= max) { max = Convert.ToDouble(data[i][51]); }
-            //        if (Convert.ToDouble(data[i][39]) <= min) { min = Convert.ToDouble(data[i][51]); }
-            //    }
+            double max = 0.0000;
+            double min = 0.0000;
+            for (int i = start; i < end; i++)
+            {
+                if (i == start)
+                {
+                    max = Convert.ToDouble(data[i][39]);
+                    min = Convert.ToDouble(data[i][39]);
+                }
+                else
+                {
+                    if (Convert.ToDouble(data[i][39]) >= max) { max = Convert.ToDouble(data[i][39]); }
+                    if (Convert.ToDouble(data[i][39]) <= min) { min = Convert.ToDouble(data[i][39]); }
+                }
 
-            //}
-            //return (max - min);
-            return (Convert.ToDouble(data[end][39]) - Convert.ToDouble(data[start][39]));
+            }
+            return (max - min);
+            //return (Convert.ToDouble(data[end][39]) - Convert.ToDouble(data[start][39]));
         }
 
 
@@ -915,7 +989,8 @@ namespace Project1
             //aqtotal = Table[data[[43 + 77*(i - 1)]], {i, 2, Length[data]/77}];
             //artotal = Table[data[[44 + 77 * (i - 1)]], { i, 2, Length[data] / 77}];
 
-            //Console.WriteLine(end);
+            Console.WriteLine("start frame = " + start);
+            Console.WriteLine("end fram = " + end);
             double apMax = Convert.ToDouble(data[end][41]); //ap = col 42
             double apMin = Convert.ToDouble(data[start][41]);
             double aqMax = Convert.ToDouble(data[end][42]); //aq = col 43
@@ -962,8 +1037,6 @@ namespace Project1
             return (Math.Sqrt(Math.Pow(beMax - beMin, 2) + Math.Pow(bfMax - bfMin, 2) +
                      Math.Pow(bgMax - bgMin, 2)));
         }
-
-
         private double CalculateFootRightDistance(int start, int end)
         {
             //Right Distance = Sqrt[(bhtotal[[MAX]] - bhtotal[[MIN]])^2 + bitotal[[MAX]] - bitotal[[MIN]])^2 + (bjtotal[[MAX]] - bjtotal[[MIN]])^2]]
@@ -983,6 +1056,7 @@ namespace Project1
 
 
         }
+
         private double CalculatAnkleLeftDistance(int start, int end)
         {
 
@@ -998,6 +1072,7 @@ namespace Project1
             return (Math.Sqrt(Math.Pow(anlxMax - anlxMin, 2) + Math.Pow(anlyMax - anlyMin, 2) + Math.Pow(anlzMax - anlzMin, 2)));
         }
 
+
         private double CalculateAnkleRightDistance(int start, int end)
         {         //Ankle Right Distance =Sqrt[(anrxtotal[[MAX]] - anrxtotal[[MIN]])^2 + (anrytotal[[MAX]] - anrytotal[[MIN]])^2 + (anrztotal[[MAX]] - anrztotal[[MIN]])^2]]}
 
@@ -1010,6 +1085,7 @@ namespace Project1
 
             return Math.Sqrt(Math.Pow(ankleXMax - ankleXMin, 2) + Math.Pow(ankleYMax - ankleYMin, 2) + Math.Pow(ankleZMax - ankleZMin, 2));
         }
+
         private double CalculateHipLeftDistance(int start, int end)
         {//"Hip Left Distance = Sqrt[(hiplxtotal[[MAX]] - hiplxtotal[[MIN]])^ 2 + (hiplytotal[[MAX]] - hiplytotal[[MIN]])^ 2 + (hiplztotal[[MAX]] - hiplztotal[[MIN]])^ 2]],
 
@@ -1023,6 +1099,7 @@ namespace Project1
 
             return Math.Sqrt(Math.Pow(hipTotalXMax - hipTotalXMin, 2) + Math.Pow(hipTotalYMax - hipTotalYMin, 2) + Math.Pow(hipTotalZMax - hipTotalZMin, 2));
         }
+
         private double CalculateHipRightDistance(int start, int end)
         {//Spine Distance = [Sqrt]((spinextotal[[MAX]] - spinextotal[[MIN]])^ 2 + (spineytotal[[MAX]] - spineytotal[[MIN]])^ 2 + (spineztotal[[MAX]] - spineztotal[[MIN]])^ 2)]},
 
@@ -1037,74 +1114,75 @@ namespace Project1
 
             return Math.Sqrt(Math.Pow(XMax - XMin, 2) + Math.Pow(YMax - YMin, 2) + Math.Pow(ZMax - ZMin, 2));
         }
-        private double CalculateHipAngleAtMax(int start, int end)
+
+        private double CalculateHipAngle(int frame)
         {
 
 
-            double hipRightXMax = Convert.ToDouble(data[end][50]);
-            double hipLeftXMax = Convert.ToDouble(data[end][38]);
-            double hipRightYMax = Convert.ToDouble(data[end][51]);
-            double hipLeftYMax = Convert.ToDouble(data[end][39]);
-            double hipRightZMax = Convert.ToDouble(data[end][52]);
-            double hipLeftZMax = Convert.ToDouble(data[end][40]);
+            double hipRightXMax = Convert.ToDouble(data[frame][50]);
+            double hipLeftXMax = Convert.ToDouble(data[frame][38]);
+            double hipRightYMax = Convert.ToDouble(data[frame][51]);
+            double hipLeftYMax = Convert.ToDouble(data[frame][39]);
+            double hipRightZMax = Convert.ToDouble(data[frame][52]);
+            double hipLeftZMax = Convert.ToDouble(data[frame][40]);
 
 
             //Hip Angle at Max = [180/[Pi]ArcCos[(hiprxtotal[[MAX]]-hiplxtotal[[MAX]])/[Sqrt]((hiprxtotal[[MAX]]-hiplxtotal[[MAX]])^2+(hiprytotal[[MAX]]-hiplytotal[[MAX]])^2+(hiprztotal[[MAX]]-hiplztotal[[MAX]])^2))]]},
             return ((180 / Math.PI) * Math.Acos((hipRightXMax - hipLeftXMax) / (Math.Sqrt(Math.Pow(hipRightXMax - hipLeftXMax, 2) + Math.Pow(hipRightYMax - hipLeftYMax, 2)
                                                                                     + Math.Pow(hipRightZMax - hipLeftZMax, 2)))));
         }
-        private double CalculateHipAngleAtMin(int start, int end)
-        {
+        //private double CalculateHipAngleAtMin(int start, int end)
+        //{
 
-            //	"Hip Angle at Min = [180 /\[Pi] ArcCos[(hiprxtotal[[MIN]] - hiplxtotal[[MIN]])///Sqrt[(hiprxtotal[[MIN]] -//hiplxtotal[[MIN]])^ 2 + (hiprytotal[[MIN]] -
-            //hiplytotal[[MIN]])^ 2 + (hiprztotal[[MIN]] - //hiplztotal[[MIN]])^ 2]]]
-            double hipRightXMin = Convert.ToDouble(data[start][50]);
-            double hipLeftXMin = Convert.ToDouble(data[start][38]);
-            double hipRightYMin = Convert.ToDouble(data[start][51]);
-            double hipLeftYMin = Convert.ToDouble(data[start][39]);
-            double hipRightZMin = Convert.ToDouble(data[start][52]);
-            double hipLeftZMin = Convert.ToDouble(data[start][40]);
+        //    //	"Hip Angle at Min = [180 /\[Pi] ArcCos[(hiprxtotal[[MIN]] - hiplxtotal[[MIN]])///Sqrt[(hiprxtotal[[MIN]] -//hiplxtotal[[MIN]])^ 2 + (hiprytotal[[MIN]] -
+        //    //hiplytotal[[MIN]])^ 2 + (hiprztotal[[MIN]] - //hiplztotal[[MIN]])^ 2]]]
+        //    double hipRightXMin = Convert.ToDouble(data[start][50]);
+        //    double hipLeftXMin = Convert.ToDouble(data[start][38]);
+        //    double hipRightYMin = Convert.ToDouble(data[start][51]);
+        //    double hipLeftYMin = Convert.ToDouble(data[start][39]);
+        //    double hipRightZMin = Convert.ToDouble(data[start][52]);
+        //    double hipLeftZMin = Convert.ToDouble(data[start][40]);
 
-            return ((180 / Math.PI) * Math.Acos((hipRightXMin - hipLeftXMin) / Math.Sqrt(Math.Pow(hipRightXMin - hipLeftXMin, 2) + Math.Pow(hipRightYMin - hipLeftYMin, 2)
-                                                                                   + Math.Pow(hipRightZMin - hipLeftZMin, 2))));
-        }
-        private double CalculateShoulderAngleAtMax(int start, int end)
+        //    return ((180 / Math.PI) * Math.Acos((hipRightXMin - hipLeftXMin) / Math.Sqrt(Math.Pow(hipRightXMin - hipLeftXMin, 2) + Math.Pow(hipRightYMin - hipLeftYMin, 2)
+        //                                                                           + Math.Pow(hipRightZMin - hipLeftZMin, 2))));
+        //}
+        private double CalculateShoulderAngle(int frame)
         {
 
             //Shoulder Angle at Max =[180/\[Pi]ArcCos[(srxtotal[[MAX]] - //slxtotal[[MAX]])/Sqrt[(srxtotal[[MAX]] - slxtotal[[MAX]])^2 + \//(srytotal[[MAX]] - 
             //slytotal[[MAX]])^2 + (srztotal[[MAX]] - \//slztotal[[MAX]])^2]
-            double shoulderRightXMax = Convert.ToDouble(data[end][26]);
-            double shoulderLeftXMax = Convert.ToDouble(data[end][14]);
-            double shoulderRightYMax = Convert.ToDouble(data[end][27]);
-            double shoulderLeftYMax = Convert.ToDouble(data[end][15]);
-            double shoulderRightZMax = Convert.ToDouble(data[end][28]);
-            double shoulderLeftZMax = Convert.ToDouble(data[end][16]);
+            double shoulderRightXMax = Convert.ToDouble(data[frame][26]);
+            double shoulderLeftXMax = Convert.ToDouble(data[frame][14]);
+            double shoulderRightYMax = Convert.ToDouble(data[frame][27]);
+            double shoulderLeftYMax = Convert.ToDouble(data[frame][15]);
+            double shoulderRightZMax = Convert.ToDouble(data[frame][28]);
+            double shoulderLeftZMax = Convert.ToDouble(data[frame][16]);
 
 
             return ((180 / Math.PI) * Math.Acos((shoulderRightXMax - shoulderLeftXMax) / Math.Sqrt(Math.Pow(shoulderRightXMax - shoulderLeftXMax, 2) + Math.Pow(shoulderRightYMax - shoulderLeftYMax, 2)
                                                                                        + Math.Pow(shoulderRightZMax - shoulderLeftZMax, 2))));
         }
-        private double CalculateShoulderAngleAtMin(int start, int end)
-        {
+        //private double CalculateShoulderAngleAtMin(int start, int end)
+        //{
 
 
-            //Shoulder Angle at Min = [\!\(\*FractionBox[\(180\), \//\(\[Pi]\)]\)ArcCos[\!\(\*FractionBox[\(srxtotal[\([\)\(MIN\)\(]\)] - \
-            //slxtotal[\([\)\(MIN\)\(]\)]\), \//SqrtBox[\(\*SuperscriptBox[\((srxtotal[\([\)\(MIN\)\(]\)] - slxtotal[\
-            //\([\)\(MIN\)\(]\)])\), \(2\)] + \//\*SuperscriptBox[\((srytotal[\([\)\(MIN\)\(]\)] - slytotal[\([\)\(MIN\
-            //\)\(]\)])\), \(2\)] + \*SuperscriptBox[\((srztotal[\([\)\(MIN\)\(]\)] \//- slztotal[\([\)\(MIN\)\(]\)])\), \(2\)]\)]]\)]],\[IndentingNewLine]" \
-            double shoulderRightXMin = Convert.ToDouble(data[start][26]);
-            double shoulderLeftXMin = Convert.ToDouble(data[start][14]);
-            double shoulderRightYMin = Convert.ToDouble(data[start][27]);
-            double shoulderLeftYMin = Convert.ToDouble(data[start][15]);
-            double shoulderRightZMin = Convert.ToDouble(data[start][28]);
-            double shoulderLeftZMin = Convert.ToDouble(data[start][16]);
+        //    //Shoulder Angle at Min = [\!\(\*FractionBox[\(180\), \//\(\[Pi]\)]\)ArcCos[\!\(\*FractionBox[\(srxtotal[\([\)\(MIN\)\(]\)] - \
+        //    //slxtotal[\([\)\(MIN\)\(]\)]\), \//SqrtBox[\(\*SuperscriptBox[\((srxtotal[\([\)\(MIN\)\(]\)] - slxtotal[\
+        //    //\([\)\(MIN\)\(]\)])\), \(2\)] + \//\*SuperscriptBox[\((srytotal[\([\)\(MIN\)\(]\)] - slytotal[\([\)\(MIN\
+        //    //\)\(]\)])\), \(2\)] + \*SuperscriptBox[\((srztotal[\([\)\(MIN\)\(]\)] \//- slztotal[\([\)\(MIN\)\(]\)])\), \(2\)]\)]]\)]],\[IndentingNewLine]" \
+        //    double shoulderRightXMin = Convert.ToDouble(data[start][26]);
+        //    double shoulderLeftXMin = Convert.ToDouble(data[start][14]);
+        //    double shoulderRightYMin = Convert.ToDouble(data[start][27]);
+        //    double shoulderLeftYMin = Convert.ToDouble(data[start][15]);
+        //    double shoulderRightZMin = Convert.ToDouble(data[start][28]);
+        //    double shoulderLeftZMin = Convert.ToDouble(data[start][16]);
 
 
-            return ((180 / Math.PI) * Math.Acos((shoulderRightXMin - shoulderLeftXMin)
-                                                / Math.Sqrt(Math.Pow(shoulderRightXMin - shoulderLeftXMin, 2)
-                                                            + Math.Pow(shoulderRightYMin - shoulderLeftYMin, 2)
-                                                                                       + Math.Pow(shoulderRightZMin - shoulderLeftZMin, 2))));
-        }
+        //    return ((180 / Math.PI) * Math.Acos((shoulderRightXMin - shoulderLeftXMin)
+        //                                        / Math.Sqrt(Math.Pow(shoulderRightXMin - shoulderLeftXMin, 2)
+        //                                                    + Math.Pow(shoulderRightYMin - shoulderLeftYMin, 2)
+        //                                                                               + Math.Pow(shoulderRightZMin - shoulderLeftZMin, 2))));
+        //}
 
         private double CalculateSpineDistance(int start, int end)
         {
@@ -1126,406 +1204,776 @@ namespace Project1
             double spineZMax = Convert.ToDouble(data[end][4]);
 
 
-			return Math.Sqrt(Math.Pow(spineXMax - spineXMin, 2) + 
+            return Math.Sqrt(Math.Pow(spineXMax - spineXMin, 2) +
                              Math.Pow(spineYMax - spineYMin, 2) +
                              Math.Pow(spineZMax - spineZMin, 2));
         }
 
-		/**************************************************************
-        * TAI CALCULATIONS
+        /**************************************************************
+        * MANUAL TAI CALCULATIONS
         **************************************************************/
 
-		private int Calculate1_1(double height, double RUALength, double LUALength, double RForearmLength, double LForearmLength,
-                                double TrunkLength, double RThighLength, double LThighLength, double RLegLength,
-                                double LLegLength, double RFootLength, double LFootLength)
-		{
-            //CHANGE VARIABLES HERE
-            double Height_cm_1_var = .041;
-			double R_Upper_Arm_Length_13_var = -.557;
-			double L_Upper_Arm_Length_14_var = .711;
-			double R_Forearm_Length_15_var = .001;
-			double L_Forearm_Length_16_var = -.399;
-			double Trunk_Length_19_var = .176;
-			double R_Thigh_Length_20_var = -.169;
-			double L_Thigh_Length_21_var = .181;
-			double R_Leg_Length_22_var = -.307;
-			double L_Leg_Length_23_var = .518;
-			double R_Foot_Length_24_var = .210;
-			double L_Foot_Length_25_var = -.447;
-			double Dx_SpineBase_var = -.010;			
-			double Dx_HipLeft_var = -.006;			
-			double Dx_HipRightVar = .009;
-			double constant = -10.096;
+        double PredictedValue(double score)
+        {
+            double predictedValue = (Math.Pow(2.718281828, score) / (1 + Math.Pow(2.718281828, score)));
+            return predictedValue;
+        }
 
-			
-			TAI1_1 = (Height_cm_1_var * height)
-                + (R_Upper_Arm_Length_13_var * RUALength)
-                + (L_Upper_Arm_Length_14_var * LUALength)
-                + (R_Forearm_Length_15_var * RForearmLength)
-                + (L_Forearm_Length_16_var * LForearmLength)
-                + (Trunk_Length_19_var * TrunkLength)
-                + (R_Thigh_Length_20_var * RThighLength)
-                + (L_Thigh_Length_21_var * LThighLength)
-                + (R_Leg_Length_22_var * RLegLength)
-                + (L_Leg_Length_23_var * LLegLength)
-                + (R_Foot_Length_24_var * RFootLength)
-                + (L_Foot_Length_25_var * LFootLength)
-				+ (spineBase_x * Dx_SpineBase_var)
-				+ (hipLeft_x * Dx_HipLeft_var)
-				+ (hipRight_x * Dx_HipRightVar)
-				+ (constant);
+        void TAICalculations()
+        {
 
-            if(TAI1_1 >= CutValue1_1){
-                return 1;
-            }
-            else return 0;
-		}
+            TAI1_1 = Calculate1_1();
+            TAI1_2 = Calculate1_2();
+            TAI1_3 = Calculate1_3();
+            TAI1_6 = Calculate1_6();
+            TAI1_7 = Calculate1_7();
 
-		private int Calculate1_2(double mass, double height, double RUALength, double LUALength, double RForearmLength,
-                                double LForearmLength, double chestCircumference, double waistCircumference, double trunkLength,
-                                double RThighLength, double LThighLength, double RLegLength, double LLegLength,
-                                double RFootLength, double LFootLength, double wheelchairHeight)
-		{
+            calculatedTAI1_1 = Calculate1_1Calculated();
+            calculatedTAI1_2 = Calculate1_2Calculated();
+            calculatedTAI1_3 = Calculate1_3Calculated();
+            calculatedTAI1_6 = Calculate1_6Calculated();
+            calculatedTAI1_7 = Calculate1_7Calculated();
 
-			double mass_kg_0_var = -.048;
-           	double height_cm_1_var = .270;
-			double R_Upper_Arm_Length_13_var = .861;
-			double L_Upper_Arm_Length_14_var = -1.783;
-			double R_Forearm_Length_15_var = .618;
-			double L_Forearm_Length_16_var = -.155;
-			double chest_Circumference_17_var = -.027;
-			double waist_Circumference_18_var = .129;
-			double trunk_Length_19_var = .044;
-			double R_Thigh_Length_20_var = .003;
-			double L_Thigh_Length_21_var = -.333;
-			double R_Leg_Length_22_var = .791;
-			double L_Leg_Length_23_var = -.705;
-			double R_Foot_Length_24_var = -.338;
-			double L_Foot_Length_25_var = -.684;
-			double wheelchair_Height_26_var = -.561;
-			double hipAngleStart_setting_var = -.057;
-			double shoulderAngleStart_setting_var = .405;
-			double hipAngleatEnd_setting_var = .028;
-			double shoulderAngleatEnd_setting_var = .073;
-			double constant = 25.305;
+        }
 
-
-			TAI1_2 = (mass_kg_0_var * mass) +
-                (height_cm_1_var * height) +
-                (R_Upper_Arm_Length_13_var * RUALength) +
-			    (L_Upper_Arm_Length_14_var * LUALength) +
-                (R_Forearm_Length_15_var * RForearmLength) +
-                (L_Forearm_Length_16_var * LForearmLength) +
-                (chest_Circumference_17_var * chestCircumference) +
-                (waist_Circumference_18_var * waistCircumference) +
-                (trunk_Length_19_var * trunkLength) +
-                (R_Thigh_Length_20_var * RThighLength) +
-                (L_Thigh_Length_21_var * LThighLength) +
-                (R_Leg_Length_22_var * RLegLength) +
-                (L_Leg_Length_23_var * LLegLength) +
-                (R_Foot_Length_24_var * RFootLength) +
-                (L_Foot_Length_25_var * LLegLength) +
-                (wheelchair_Height_26_var * wheelchairHeight) +
-                (hipAngleStart_setting_var * hipAngleAtMin) +
-                (shoulderAngleStart_setting_var * shoulderAngleAtMin) +
-                (hipAngleatEnd_setting_var * hipAngleAtMax) +
-                (shoulderAngleatEnd_setting_var * shoulderAngleAtMax) +
-				constant;
-			//TODO: Verify these are the right variables
-
-			if(TAI1_2 >= CutValue1_2){
-                return 1;
-            }
-			else return 0;
-		}
-
-		private int Calculate1_3(double mass, double height, double RUALength, double LUALength, double RForearmLength, 
-                                 double LForearmLength, double chestCircumference, double waistCircumference, double trunkLength, 
-                                 double RThighLength, double LThighLength, double RLegLength, double LLegLength,
-								  double RFootLength, double LFootLength, double wheelchairHeight)
-		{
-
-			double Mass_kg_0_var = .171;
-			double Height_cm_1_var = -.443;
-			double R_Upper_Arm_Length_13_var = 1.620;
-			double L_Upper_Arm_Length_14_var = -1.688;
-			double R_Forearm_Length_15_var = 1.201;
-			double L_Forearm_Length_16_var = -1.235;
-			double Chest_Circumference_17_var = -.037;
-			double Waist_Circumference_18_var = -.176;
-			double Trunk_Length_19_var = .149;
-			double R_Thigh_Length_20_var = -.006;
-			double L_Thigh_Length_21_var = .313;
-			double R_Leg_Length_22_var = 1.071;
-			double L_Leg_Length_23_var = .176;
-			double R_Foot_Length_24_var = -1.502;
-			double L_Foot_Length_25_var = 1.954;
-			double Wheelchair_Height_26_var = .104;
-			double SpineBaseY_trail_var = .019;
-			double HipLeftY_trail_var = .001;
-			double HipRightY_trail_var = -.030;
-			double Constant = 4.690;
-
-			double result = (Mass_kg_0_var * mass) +
-                (Height_cm_1_var * height) +
-				(R_Upper_Arm_Length_13_var * RUALength) +
-                (L_Upper_Arm_Length_14_var * LUALength) +
-                (R_Forearm_Length_15_var * RForearmLength) +
-                (L_Forearm_Length_16_var * LForearmLength) +
-                (Chest_Circumference_17_var * chestCircumference) +
-                (Waist_Circumference_18_var * waistCircumference) +
-                (Trunk_Length_19_var * trunkLength) +
-                (R_Thigh_Length_20_var * RThighLength) +
-                (L_Thigh_Length_21_var * LThighLength) +
-                (R_Leg_Length_22_var * RLegLength) +
-                (L_Leg_Length_23_var * LLegLength) +
-                (R_Foot_Length_24_var * RFootLength) +
-                (L_Foot_Length_25_var * LFootLength) +
-                (Wheelchair_Height_26_var * wheelchairHeight) +
-                (SpineBaseY_trail_var * spineBase_y) +
-                (HipLeftY_trail_var * hipLeft_y) +
-                (HipRightY_trail_var * hipRight_y) +
-				(Constant);
-
-            if(result > CutValue1_3){
-                return 1;
-            }
-            else return 0;
-		}
-
-
-		private int Calculate1_6(double RThighLength, double LThighLength, double RLegLength, double LLegLength,
-                                 double RFootLength, double LFootLength, double wheelchairHeight)
-		{
-			double kneeLeftDistance_setting_var = .00340;
-			double footLeftDistance_setting_var = .00711;
-			double ankleLeftDistance_setting_var = -.00366;
-			double hipLeftDistance_setting_var = -.00059;
-			double kneeRightDistance_setting_var = -.00030;
-			double footRightDistance_setting_var = .00094;
-			double ankleRightDistance_setting_var = .00102;
-			double hipRightDistance_setting_var = -.00400;
-			double R_Thigh_Length_20_var = -.33944;
-			double L_Thigh_Length_21_var = .25505;
-			double R_Leg_Length_22_var = .74918;
-			double L_Leg_Length_23_var = -.69679;
-			double R_Foot_Length_24_var = -.27614;
-			double L_Foot_Length_25_var = .10554;
-			double wheelchair_Height_26_var = .07388;
-			double constant = .25251;
-
-            //TODO: find where these vars come from
-            TAI1_6 = (kneeLeftDistance_setting_var * kneeLeftDistance) +
-                    (footLeftDistance_setting_var * footLeftDistance) +
-                (ankleLeftDistance_setting_var * ankleLeftDistance) +
-                (hipLeftDistance_setting_var * hipLeftDistance) +
-                (kneeRightDistance_setting_var * kneeRightDistance) +
-                (footRightDistance_setting_var * footRightDistance) +
-                (ankleRightDistance_setting_var * ankleRightDistance) +
-                (hipRightDistance_setting_var * hipRightDistance) +
-                (R_Thigh_Length_20_var * RThighLength) +
-                (L_Thigh_Length_21_var * LThighLength) +
-                (R_Leg_Length_22_var * RLegLength) +
-                (L_Leg_Length_23_var * LLegLength) +
-                (R_Foot_Length_24_var * RFootLength) +
-                (L_Foot_Length_25_var * LFootLength) +
-                (wheelchair_Height_26_var * wheelchairHeight) +
-			    (constant);
-
-            if(TAI1_6 >= CutValue1_6){
-                return 1;
-            }
-            else return 0;
-		}
-
-		private int Calculate1_7(double height, double RThighLength, double LThighLength, double RLegLength,
-                                 double LLegLength, double RFootLength, double LFootLength)
-		{
-			double hipLeftDistance_setting_var = -.009;
-			double spineDistance_setting_var = .014;
-			double hipRightDistance_setting_var = -.008;
-			double height_cm_1_var = -.194;
-			double R_Thigh_Length_20_var = .585;
-			double L_Thigh_Length_21_var = -.415;
-			double R_Leg_Length_22_var = -.157;
-			double L_Leg_Length_23_var = .754;
-			double R_Foot_Length_24_var = -.167;
-			double L_Foot_Length_25_var = .151;
-			double constant = 1.289;
-
-            TAI1_7 = (hipLeftDistance_setting_var * hipLeftDistance) +
-                (spineDistance_setting_var * spineDistance) +
-                (hipRightDistance_setting_var * hipRightDistance) +
-                (height_cm_1_var * height) +
-                (R_Thigh_Length_20_var * RThighLength) +
-                (L_Thigh_Length_21_var * LThighLength) +
-                (R_Leg_Length_22_var * RLegLength) +
-                (L_Leg_Length_23_var * LLegLength) +
-                (R_Foot_Length_24_var * RFootLength) +
-                (L_Foot_Length_25_var * LFootLength) +
-			    constant;
-
-            //Console.WriteLine(hipLeftDistance_setting_var + "*" + hipLeftDistance + "+");
-            //Console.WriteLine(spineDistance_setting_var + "*" + spineDistance + "+");
-            //Console.WriteLine(hipRightDistance_setting_var + "*" + hipRightDistance + "+");
-            //Console.WriteLine(height_cm_1_var + "*" + height + "+");
-            //Console.WriteLine(R_Thigh_Length_20_var + "*" + RThighLength + "+");
-            //Console.WriteLine(L_Thigh_Length_21_var + "*" + LThighLength + "+");
-            //Console.WriteLine(R_Leg_Length_22_var + "*" + RLegLength + "+");
-            //Console.WriteLine(L_Leg_Length_23_var + "*" + LLegLength + "+");
-            //Console.WriteLine(R_Foot_Length_24_var + "*" + RFootLength + "+");
-            //Console.WriteLine(L_Foot_Length_25_var + "*" + LFootLength + "+");
-                   //Console.WriteLine(constant);
-            
-            //Console.WriteLine("TAI = " + TAI1_7);
-
-            if(TAI1_7 <= CutValue1_7){
-                return 1;
-            }
-            else {
-                return 0;
-            }
-                
-		}
-
-        void TAICalculations(){
-
-            //Console.WriteLine("Enter Height in cm: ");
-            //double height = Double.Parse(Console.ReadLine());
-
-            //Console.WriteLine("Enter mass: ");
-            //double mass = double.Parse(Console.ReadLine());
-
-            //Console.WriteLine("Enter Right upper arm length ");
-
-
-            //double RUALength = Double.Parse(Console.ReadLine());
-
-            //Console.WriteLine("Enter Left upper arm length: ");
-            //double LUALength = Double.Parse(Console.ReadLine());
-
-            //Console.WriteLine("Enter right forearm length: ");
-            //double RForearmLength = Double.Parse(Console.ReadLine());
-
-            //Console.WriteLine("Enter left forearm length: ");
-            //double LForearmLength = Double.Parse(Console.ReadLine());
-
-            //Console.WriteLine("Enter trunk length: ");
-            //double trunkLength = Double.Parse(Console.ReadLine());
-
-            //Console.WriteLine("Enter right thigh length: ");
-            //double RThighLength = Double.Parse(Console.ReadLine());
-
-            //Console.WriteLine("Enter left thigh length: ");
-            //double LThighLength = Double.Parse(Console.ReadLine());
-
-            //Console.WriteLine("Enter right leg length: ");
-            //double RLegLength = Double.Parse(Console.ReadLine());
-
-            //Console.WriteLine("Enter left leg length: ");
-            //double LLegLength = Double.Parse(Console.ReadLine());
-
-            //Console.WriteLine("Enter right food length: ");
-            //double RFootLength = Double.Parse(Console.ReadLine());
-
-            //Console.WriteLine("Enter left food length: ");
-            //double LFootLength = Double.Parse(Console.ReadLine());
-
-            //Console.WriteLine("Enter chest circumference:");
-            //double chestCircumference = double.Parse(Console.ReadLine());
-
-            //Console.WriteLine("Enter waist circumference:");
-            //double waistCircumference = double.Parse(Console.ReadLine());
-
-            //Console.WriteLine("Enter wheelchair hieght:");
-            //double wheelchairHeight = double.Parse(Console.ReadLine());
-
-
-
-            //double height = 175.26;
-            //double mass = 82.63;
-            //double RUALength = 35;
-            //double LUALength = 35;
-            //double RForearmLength = 30;
-            //double LForearmLength = 29;
-            //double trunkLength = 57;
-            //double RThighLength = 42;
-            //double LThighLength = 45;
-            //double RLegLength = 43;
-            //double LLegLength = 45;
-            //double RFootLength = 22;
-            //double LFootLength = 21;
-            //double chestCircumference = 117;
-            //double waistCircumference = 109;
-            //double wheelchairHeight = 57;
-
-            TAI1_1 = Calculate1_1(height,rightUpperArmLength,leftUpperArmLength,rightForearmLength,leftForearmLength,trunkLength,rightThighLength,
-                                  leftThighLength,rightLegLength,leftLegLength,rightFootLength,leftFootLength);
-
-            TAI1_2 = Calculate1_2(mass, height, rightUpperArmLength, leftUpperArmLength, rightForearmLength,
-                                leftForearmLength, chestCircumference, waistCircumference, trunkLength,
-                                  rightThighLength, leftThighLength, rightLegLength, leftLegLength,
-								rightFootLength, leftFootLength, wheelchairHeight);
-            
-            TAI1_3 = Calculate1_3(mass, height, rightUpperArmLength, leftUpperArmLength, rightForearmLength, leftForearmLength, chestCircumference,
-                                  waistCircumference, trunkLength, rightThighLength, leftThighLength, rightLegLength, leftLegLength,
-                                  rightFootLength, leftFootLength, wheelchairHeight);
-
-            TAI1_6 = Calculate1_6(rightThighLength, leftThighLength, rightLegLength, leftLegLength, rightFootLength, leftFootLength, wheelchairHeight);
-
-            TAI1_7 = Calculate1_7(height, rightThighLength, leftThighLength, rightLegLength, leftLegLength, rightFootLength, leftFootLength);
-
-		}
-
-
-
-        public void OutputToTxt(){
-            //OutputTAI();
-            //OutputVariables();
+        public void OutputToTxt()
+        {
+            OutputTAI();
+            OutputVariables();
             OutputJointDistance();
+            OutputComparison();
         }
 
 
+
+        /*
+         * DONE
+         */
+        private int Calculate1_1()
+        {
+            //CHANGE VARIABLES HERE
+            double Height_cm_1_var = 0.15382898;
+            double R_Upper_Arm_Length_13_var = -0.63851325;
+            double L_Upper_Arm_Length_14_var = 0.90774276;
+            double R_Forearm_Length_15_var = -0.39967018;
+            double L_Forearm_Length_16_var = -0.08388424;
+            double Chest_Circumference_17_var = 0.11348068;
+            double R_Thigh_Length_20_var = -0.20833378;
+            double L_Thigh_Length_21_var = 0.08918904;
+            double R_Leg_Length_22_var = -0.42055221;
+            double L_Leg_Length_23_var = 0.4231421;
+            double R_Foot_Length_24_var = 0.60398815;
+            double L_Foot_Length_25_var = -0.87942671;
+            double Dx_SpineBase_var = -0.0232257;
+            double Dx_HipLeft_var = 0.00360027;
+            double Dx_HipRightVar = 0.01617653;
+            double constant = -20.91526416;
+
+
+            double score = (Height_cm_1_var * height)
+                + (R_Upper_Arm_Length_13_var * manualRUA_Length)
+                + (L_Upper_Arm_Length_14_var * manualLUA_Length)
+                + (R_Forearm_Length_15_var * manualR_Forearm_Length)
+                + (L_Forearm_Length_16_var * manualL_Forearm_Length)
+                + (Chest_Circumference_17_var * manualChestCircumference)
+                + (R_Thigh_Length_20_var * manualR_Thigh_Length)
+                + (L_Thigh_Length_21_var * manualL_Thigh_Length)
+                + (R_Leg_Length_22_var * manualR_Leg_Length)
+                + (L_Leg_Length_23_var * manualL_Leg_Length)
+                + (R_Foot_Length_24_var * manualR_Foot_Length)
+                + (L_Foot_Length_25_var * manualL_Foot_Length)
+                + (spineBase_x * Dx_SpineBase_var)
+                + (hipLeft_x * Dx_HipLeft_var)
+                + (hipRight_x * Dx_HipRightVar)
+                + (constant);
+
+            double predicted = PredictedValue(score);
+
+
+
+            //Console.WriteLine(Height_cm_1_var * height);
+            //Console.WriteLine(R_Upper_Arm_Length_13_var * manualRUA_Length);
+            //Console.WriteLine(L_Upper_Arm_Length_14_var * manualLUA_Length);
+            //Console.WriteLine(R_Forearm_Length_15_var * manualR_Forearm_Length);
+            //Console.WriteLine(L_Forearm_Length_16_var * manualL_Forearm_Length);
+            //Console.WriteLine(Chest_Circumference_17_var * manualChestCircumference);
+            //Console.WriteLine(R_Thigh_Length_20_var * manualR_Thigh_Length);
+            //Console.WriteLine(L_Thigh_Length_21_var * manualL_Thigh_Length);
+            //Console.WriteLine(R_Leg_Length_22_var * manualR_Leg_Length);
+            //Console.WriteLine(L_Leg_Length_23_var * manualL_Leg_Length);
+            //Console.WriteLine(R_Foot_Length_24_var * manualR_Foot_Length);
+            //Console.WriteLine(L_Foot_Length_25_var * manualL_Foot_Length);
+            //Console.WriteLine(Dx_SpineBase_var * spineBase_x);
+            //Console.WriteLine(Dx_HipLeft_var * hipLeft_x);
+            //Console.WriteLine(Dx_HipRightVar * hipRight_x);
+            //Console.WriteLine(constant);
+            //Console.WriteLine("1_1score = " +score);
+            //Console.WriteLine("subject#" + subjectNum + "_" + testNum + " 1_1 = " + predicted);
+
+
+            if (score >= CutValue1_1)
+            {
+                return 1;
+            }
+            else return 0;
+        }
+
+        private int Calculate1_2()
+        {
+            double mass_kg_0_var = -0.04928772;
+            double height_cm_1_var = 0.26648226;
+            double R_Upper_Arm_Length_13_var = 0.88849528;
+            double L_Upper_Arm_Length_14_var = -1.8446127;
+            double R_Forearm_Length_15_var = 0.6526423;
+            double L_Forearm_Length_16_var = -0.155697;
+            double chest_Circumference_17_var = -0.02023203;
+            double waist_Circumference_18_var = 0.12776029;
+            double trunk_Length_19_var = 0.04646773;
+            double R_Thigh_Length_20_var = 0.02227374;
+            double L_Thigh_Length_21_var = -0.36827157;
+            double R_Leg_Length_22_var = 0.81850244;
+            double L_Leg_Length_23_var = -0.70104958;
+            double R_Foot_Length_24_var = -0.33555256;
+            double L_Foot_Length_25_var = -0.71928095;
+            double wheelchair_Height_26_var = -0.59641335;
+            double hipAngleStart_setting_var = -0.04608105;
+            double shoulderAngleStart_setting_var = 0.41847492;
+            double hipAngleatEnd_setting_var = 0.03173129;
+            double shoulderAngleatEnd_setting_var = 0.07229982;
+            double constant = 27.38307299;
+
+
+
+            double score = (mass_kg_0_var * mass) +
+                (height_cm_1_var * height) +
+                (R_Upper_Arm_Length_13_var * manualRUA_Length) +
+                (L_Upper_Arm_Length_14_var * manualLUA_Length) +
+                (R_Forearm_Length_15_var * manualR_Forearm_Length) +
+                (L_Forearm_Length_16_var * manualL_Forearm_Length) +
+                (chest_Circumference_17_var * manualChestCircumference) +
+                (waist_Circumference_18_var * manualWaistCircumference) +
+                (trunk_Length_19_var * manualTrunkLength) +
+                (R_Thigh_Length_20_var * manualR_Thigh_Length) +
+                (L_Thigh_Length_21_var * manualL_Thigh_Length) +
+                (R_Leg_Length_22_var * manualR_Leg_Length) +
+                (L_Leg_Length_23_var * manualL_Leg_Length) +
+                (R_Foot_Length_24_var * manualR_Foot_Length) +
+                (L_Foot_Length_25_var * manualL_Foot_Length) +
+                (wheelchair_Height_26_var * manualWheelchairHeight) +
+                (hipAngleStart_setting_var * hipAngleStart_setting) +
+                (shoulderAngleStart_setting_var * shoulderAngleStart_setting) +
+                (hipAngleatEnd_setting_var * hipAngleatEnd_setting) +
+                (shoulderAngleatEnd_setting_var * shoulderAngleatEnd_setting) +
+                constant;
+            //TODO: Verify these are the right variables
+            //Console.WriteLine("1_2 score : " + score);
+            double predicted = PredictedValue(score);
+
+            //Console.WriteLine("subject#" + subjectNum + "_" + testNum + " 1_2 = " + predicted);
+
+            if (predicted >= CutValue1_2)
+            {
+                return 1;
+            }
+            else return 0;
+        }
+
+        private int Calculate1_3()
+        {
+
+            double Height_cm_1_var = -0.18696058;
+            double R_Upper_Arm_Length_13_var = 0.78834246;
+            double L_Upper_Arm_Length_14_var = -0.79709102;
+            double R_Forearm_Length_15_var = 0.15184063;
+            double L_Forearm_Length_16_var = 0.113007;
+            double Trunk_Length_19_var = -0.00213037;
+
+            double R_Thigh_Length_20_var = -0.13713118;
+            double L_Thigh_Length_21_var = 0.10147534;
+            double R_Leg_Length_22_var = 0.14925063;
+            double L_Leg_Length_23_var = 0.3111351;
+            double R_Foot_Length_24_var = 0.27375557;
+            double L_Foot_Length_25_var = 0.14546865;
+            double Wheelchair_Height_26_var = 0.09157182;
+            double SpineBaseYMax_Min_transfer = 0.02614024;
+            double HipRightYMax_Min_transfer = -0.03141481;
+            double HipLeftYMax_Min_transfer = 0.00314057;
+            double Constant = -3.4057322;
+
+            double score = (Height_cm_1_var * height) +
+                (R_Upper_Arm_Length_13_var * manualRUA_Length) +
+                (L_Upper_Arm_Length_14_var * manualLUA_Length) +
+                (R_Forearm_Length_15_var * manualR_Forearm_Length) +
+                (L_Forearm_Length_16_var * manualL_Forearm_Length) +
+                (Trunk_Length_19_var * manualTrunkLength) +
+                (R_Thigh_Length_20_var * manualR_Thigh_Length) +
+                (L_Thigh_Length_21_var * manualL_Thigh_Length) +
+                (R_Leg_Length_22_var * manualR_Leg_Length) +
+                (L_Leg_Length_23_var * manualL_Leg_Length) +
+                (R_Foot_Length_24_var * manualR_Foot_Length) +
+                (L_Foot_Length_25_var * manualL_Foot_Length) +
+                (Wheelchair_Height_26_var * manualWheelchairHeight) +
+                (SpineBaseYMax_Min_transfer * spineBase_y_maxmin_transfer) +
+                (HipRightYMax_Min_transfer * hipRight_maxmin_transfer) +
+                (HipLeftYMax_Min_transfer * hipLeft_maxmin_transfer) +
+                (Constant);
+
+            double predicted = PredictedValue(score);
+
+            //Console.WriteLine("subject#" + subjectNum + "_" + testNum + " 1_3 = " + predicted);
+
+            if (predicted > CutValue1_3)
+            {
+                return 1;
+            }
+            else return 0;
+        }
+
+
+        private int Calculate1_6()
+        {
+            double R_Thigh_Length_20_var = -0.10829751;
+            double L_Thigh_Length_21_var = 0.12033438;
+            double R_Leg_Length_22_var = 0.37786696;
+            double L_Leg_Length_23_var = -0.20195438;
+            double R_Foot_Length_24_var = 0.36607806;
+            double L_Foot_Length_25_var = -0.74628473;
+            double wheelchair_Height_26_var = 0.04876667;
+            double kneeLeftDistance_setting_var = 0.00194906;
+            double footLeftDistance_setting_var = 0.00280199;
+            double ankleLeftDistance_setting_var = 0.00336979;
+            double hipLeftDistance_setting_var = -0.00613064;
+            double kneeRightDistance_setting_var = 0.00295072;
+            double footRightDistance_setting_var = 0.00575878;
+            double ankleRightDistance_setting_var = -0.0036614;
+            double hipRightDistance_setting_var = 0.00037899;
+            double constant = -3.42103519;
+
+            double score = (kneeLeftDistance_setting_var * kneeLeftDistanceSetting) +
+                (footLeftDistance_setting_var * footLeftDistanceSetting) +
+                (ankleLeftDistance_setting_var * ankleLeftDistanceSetting) +
+                (hipLeftDistance_setting_var * hipLeftDistanceSetting) +
+                (kneeRightDistance_setting_var * kneeRightDistanceSetting) +
+                (footRightDistance_setting_var * footRightDistanceSetting) +
+                (ankleRightDistance_setting_var * ankleRightDistanceSetting) +
+                (hipRightDistance_setting_var * hipRightDistanceSetting) +
+                (R_Thigh_Length_20_var * manualR_Thigh_Length) +
+                (L_Thigh_Length_21_var * manualL_Thigh_Length) +
+                (R_Leg_Length_22_var * manualR_Leg_Length) +
+                (L_Leg_Length_23_var * manualL_Leg_Length) +
+                (R_Foot_Length_24_var * manualR_Foot_Length) +
+                (L_Foot_Length_25_var * manualL_Foot_Length) +
+                (wheelchair_Height_26_var * manualWheelchairHeight) +
+                (constant);
+
+            double predicted = PredictedValue(score);
+
+            //Console.WriteLine("subject#" + subjectNum + "_" + testNum + " 1_6 = " + predicted);
+
+            if (predicted >= CutValue1_6)
+            {
+                return 1;
+            }
+            else return 0;
+        }
+
+        private int Calculate1_7()
+        {
+            double mass_cm_var = 0.03076941;
+            double height_cm_1_var = 0.32912701;
+            double Waist_Circumference_18 = -0.03226058;
+            double R_Thigh_Length_20_var = -0.52102881;
+            double L_Thigh_Length_21_var = 0.2968281;
+            double R_Leg_Length_22_var = 0.09914581;
+            double L_Leg_Length_23_var = -0.93442214;
+            double R_Foot_Length_24_var = 0.47831851;
+            double L_Foot_Length_25_var = -0.8041212;
+            double Wheelchair_Height_26 = -0.11026051;
+            double HipLeftDistance_setting_var = 0.08220832;
+            double SpineDistance_setting_var = -0.16043269;
+            double HipRightDistance_setting_var = 0.09495352;
+            double constant = 2.58767077;
+
+            double score = (mass_cm_var * mass)
+                + (height_cm_1_var * height)
+                + (Waist_Circumference_18 * manualWaistCircumference)
+                + (R_Thigh_Length_20_var * manualR_Thigh_Length)
+                + (L_Thigh_Length_21_var * manualL_Thigh_Length)
+                + (R_Leg_Length_22_var * manualR_Leg_Length)
+                + (L_Leg_Length_23_var * manualL_Leg_Length)
+                + (R_Foot_Length_24_var * manualR_Foot_Length)
+                + (L_Foot_Length_25_var * manualL_Foot_Length)
+                + (Wheelchair_Height_26 * manualWheelchairHeight)
+                + (HipLeftDistance_setting_var * hipLeftDistanceSetting)
+                + (SpineDistance_setting_var * spineDistanceSetting)
+                + (HipRightDistance_setting_var * hipRightDistanceSetting)
+                + (constant);
+
+            double predicted = PredictedValue(score);
+
+            //Console.WriteLine("subject#" + subjectNum + "_" + testNum + " 1_7 = " + predicted);
+
+            if (predicted <= CutValue1_7)
+            {
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
+
+        }
+
+        /**************************
+         * CALCULATED TAI
+         **************************/
+
+
+
+        /*
+         * DONE
+         */
+        private int Calculate1_1Calculated()
+        {
+            //CHANGE VARIABLES HERE
+            double R_UA_K5 = 0.24063169;
+            double L_UA_K6 = -0.12539795;
+            double R_FA_K7 = 0.06301006;
+            double L_FA_K8 = -0.06148205;
+            double Shoulderx2_K9 = 0.00624972;
+            double Hipx2_K10 = 0.0028934;
+            double R_TH_K11 = -0.0021076;
+            double L_TH_K12 = -0.04124432;
+            double R_LG_K13 = -0.02988738;
+            double L_LG_K14 = -0.02562975;
+            double R_FT_K15 = -0.03782619;
+            double L_FT_K16 = 0.02196743;
+            double Trunk_K17 = -0.01320004;
+            double Dx_SpineBase = 0.07326064;
+            double Dx_HipLeft = -0.06208951;
+            double Dx_HipRight = -0.02078857;
+            double constant = 21.66142096;
+
+
+            double score = (R_UA_K5 * rightUpperArmLength)
+                + (L_UA_K6 * leftUpperArmLength)
+                + (R_FA_K7 * rightForearmLength)
+                + (L_FA_K8 * leftForearmLength)
+                + (Shoulderx2_K9 * shoulderLength)
+                + (Hipx2_K10 * hipLength)
+                + (R_TH_K11 * rightThighLength)
+                + (L_TH_K12 * leftThighLength)
+                + (R_LG_K13 * rightLegLength)
+                + (L_LG_K14 * leftLegLength)
+                + (R_FT_K15 * rightFootLength)
+                + (L_FT_K16 * leftFootLength)
+                + (Trunk_K17 * trunkLength)
+                + (Dx_SpineBase * spineBase_x)
+                + (hipLeft_x * Dx_HipLeft)
+                + (hipRight_x * Dx_HipRight)
+                + (constant);
+
+            double predicted = PredictedValue(score);
+
+            //Console.WriteLine("TAI1_1:");
+            //Console.WriteLine(R_UA_K5 + "*" + rightUpperArmLength);
+            //Console.WriteLine(L_UA_K6 + "*" + leftUpperArmLength);
+            //Console.WriteLine(R_FA_K7 + "*" + rightForearmLength);
+            //Console.WriteLine(L_FA_K8 + "*" + leftForearmLength);
+            //Console.WriteLine(Shoulderx2_K9 + "*" + shoulderLength);
+            //Console.WriteLine(Hipx2_K10 + "*" + hipLength);
+            //Console.WriteLine(R_TH_K11 + "*" + rightThighLength);
+            //Console.WriteLine(L_TH_K12 + "*" + leftThighLength);
+            //Console.WriteLine(R_LG_K13 + "*" + rightLegLength);
+            //Console.WriteLine(L_LG_K14 + "*" + leftLegLength);
+            //Console.WriteLine(R_FT_K15 + "*" + rightFootLength);
+            //Console.WriteLine(L_FT_K16 + "*" + leftFootLength);
+            //Console.WriteLine(Trunk_K17 + "*" + trunkLength);
+            //Console.WriteLine(Dx_SpineBase + "*" + spineBase_x);
+            //Console.WriteLine(Dx_HipLeft + "*" + hipLeft_x);
+            //Console.WriteLine(Dx_HipRight + "*" + hipRight_x);
+            //Console.WriteLine(constant);
+
+            //Console.WriteLine("subject#" + subjectNum + "_" + testNum +" 1_1 = " + predicted);
+
+            if (predicted >= CutValue1_1Calculated)
+            {
+                return 1;
+            }
+            else return 0;
+        }
+
+        private int Calculate1_2Calculated()
+        {
+            double Shoulderx2_K9 = -0.0038128;
+            double Hipx2_K10 = -0.01394787;
+            double Trunk_K17 = -0.01505327;
+            double HipAngleStart_setting = 0.022669;
+            double ShoulderAngleStart_setting = 0.22414344;
+            double ShoulderAngleatEnd_setting = 0.08751414;
+            double SpineBaseYMax_Min_transfer = 0.00984001;
+            double Constant = 9.54620554;
+
+            double score = (Shoulderx2_K9 * shoulderLength)
+                + (Hipx2_K10 * hipLength)
+                + (Trunk_K17 * trunkLength)
+                + (HipAngleStart_setting * hipAngleStart_setting)
+                + (ShoulderAngleStart_setting * shoulderAngleStart_setting)
+                + (ShoulderAngleatEnd_setting * shoulderAngleatEnd_setting)
+                + (SpineBaseYMax_Min_transfer * spineBase_y_maxmin_transfer)
+                + (Constant);
+
+            double predicted = PredictedValue(score);
+
+            //         Console.WriteLine("TAI1_2:");
+            //    Console.WriteLine(Shoulderx2_K9 + "*" + shoulderLength);
+            //         Console.WriteLine(Hipx2_K10 + "*" + hipLength);
+            //         Console.WriteLine(Trunk_K17 + "*" + trunkLength);
+            //         Console.WriteLine(HipAngleStart_setting + "*" + hipAngleStart_setting);
+            //         Console.WriteLine(ShoulderAngleStart_setting + "*" + shoulderAngleStart_setting);
+            //         Console.WriteLine(ShoulderAngleatEnd_setting + "*" + shoulderAngleatEnd_setting);
+            //         Console.WriteLine(SpineBaseYMax_Min_transfer + "*" + spineBase_y_maxmin_transfer);
+            //Console.WriteLine(Constant);
+            //Console.WriteLine("1_2 score: " + score);
+
+            if (predicted >= CutValue1_2Calculated)
+            {
+                return 1;
+            }
+            else return 0;
+        }
+
+        private int Calculate1_3Calculated()
+        {
+            double Trunk_K17 = 0.0069863;
+            double R_TH_K11 = 0.0345286;
+            double L_TH_K12 = -0.06233773;
+            double R_LG_K13 = -0.00481606;
+            double L_LG_K14 = -0.00347575;
+            double R_FT_K15 = 0.03923893;
+            double L_FT_K16 = 0.00376211;
+            double SpineBaseYMax_Min_transfer = 0.02698458;
+            double HipRightYMax_Min_transfer = -0.03206215;
+            double HipLeftYMax_Min_transfer = -0.00074859;
+            double constant = 8.41452987;
+
+            double score = (Trunk_K17 * trunkLength)
+                + (R_TH_K11 * rightThighLength)
+                + (L_TH_K12 * leftThighLength)
+                + (R_LG_K13 * rightLegLength)
+                + (L_LG_K14 * leftLegLength)
+                + (R_FT_K15 * rightFootLength)
+                + (L_FT_K16 * leftFootLength)
+                + (SpineBaseYMax_Min_transfer * spineBase_y_maxmin_transfer)
+                + (HipRightYMax_Min_transfer * hipRight_maxmin_transfer)
+                + (HipLeftYMax_Min_transfer * hipLeft_maxmin_transfer)
+                + (constant);
+
+            double predicted = PredictedValue(score);
+
+            //Console.WriteLine("TAI1_3:");
+            //Console.WriteLine(Trunk_K17 +"*"+ trunkLength);
+            //Console.WriteLine(R_TH_K11 + "*" + rightThighLength);
+            //Console.WriteLine(L_TH_K12 + "*" + leftThighLength);
+            //Console.WriteLine(R_LG_K13 + "*" + rightLegLength);
+            //Console.WriteLine(L_LG_K14 + "*" + leftLegLength);
+            //Console.WriteLine(R_FT_K15 + "*" + rightFootLength);
+            //Console.WriteLine(L_FT_K16 + "*" + leftFootLength);
+            //Console.WriteLine(SpineBaseYMax_Min_transfer + "*" + spineBase_y_maxmin_transfer);
+            //Console.WriteLine(HipRightYMax_Min_transfer + "*" + hipRight_maxmin_transfer);
+            //Console.WriteLine(HipLeftYMax_Min_transfer + "*" + hipLeft_maxmin_transfer);
+            //Console.WriteLine(constant);
+            //Console.WriteLine("1_3 = " +score);
+
+            if (predicted > CutValue1_3Calculated)
+            {
+                return 1;
+            }
+            else return 0;
+        }
+
+
+        private int Calculate1_6Calculated()
+        {
+            double R_TH_K11 = 0.0059389;
+            double L_TH_K12 = -0.00894108;
+            double R_LG_K13 = -0.00033082;
+            double L_LG_K14 = -0.00136794;
+            double R_FT_K15 = 0.01426417;
+            double L_FT_K16 = 0.00047937;
+            double KneeLeftDistance_setting = 0.00001499;
+            double FootLeftDistance_setting = -0.00086909;
+            double AnkleLeftDistance_setting = 0.0031352;
+            double KneeRightDistance_setting = 0.00047609;
+            double FootRightDistance_setting = 0.00591098;
+            double AnkleRightDistance_setting = -0.00270803;
+            double constant = -0.15026301;
+
+
+            double score = (R_TH_K11 * rightThighLength)
+                + (L_TH_K12 * leftThighLength)
+                + (R_LG_K13 * rightLegLength)
+                + (L_LG_K14 * leftLegLength)
+                + (R_FT_K15 * rightFootLength)
+                + (L_FT_K16 * leftFootLength)
+                + (KneeLeftDistance_setting * kneeRightDistanceSetting)
+                + (FootLeftDistance_setting * footLeftDistanceSetting)
+                + (AnkleLeftDistance_setting * ankleLeftDistanceSetting)
+                + (KneeRightDistance_setting * kneeRightDistanceSetting)
+                + (FootRightDistance_setting * footRightDistanceSetting)
+                + (AnkleRightDistance_setting * ankleRightDistanceSetting)
+                + (constant);
+
+            double predicted = PredictedValue(score);
+
+            //         Console.WriteLine("TAI1_6:");
+            //         Console.WriteLine(R_TH_K11 + "*" + rightThighLength);
+            //Console.WriteLine(L_TH_K12 + "*" + leftThighLength);
+            //Console.WriteLine(R_LG_K13 + "*" + rightLegLength);
+            //Console.WriteLine(L_LG_K14 + "*" + leftLegLength);
+            //Console.WriteLine(R_FT_K15 + "*" + rightFootLength);
+            //Console.WriteLine(L_FT_K16 + "*" + leftFootLength);
+            //Console.WriteLine(KneeLeftDistance_setting + "*" + kneeRightDistanceSetting);
+            //Console.WriteLine(FootLeftDistance_setting + "*" + footLeftDistanceSetting);
+            //Console.WriteLine(AnkleLeftDistance_setting + "*" + ankleLeftDistanceSetting);
+            //Console.WriteLine(KneeRightDistance_setting + "*" + kneeRightDistanceSetting);
+            //Console.WriteLine(FootRightDistance_setting + "*" + footRightDistanceSetting);
+            //Console.WriteLine(AnkleRightDistance_setting + "*" + ankleRightDistanceSetting);
+            //Console.WriteLine(constant);
+            //Console.WriteLine("1_6 = " + score);
+
+            if (predicted >= CutValue1_6Calculated)
+            {
+                return 1;
+            }
+            else return 0;
+        }
+
+        private int Calculate1_7Calculated()
+        {
+            double R_TH_K11 = 0.008796;
+            double L_TH_K12 = -0.03443874;
+            double R_LG_K13 = 0.01023397;
+            double L_LG_K14 = -0.01109249;
+            double R_FT_K15 = 0.08846907;
+            double L_FT_K16 = 0.01033782;
+            double Trunk_K17 = -0.02073699;
+            double HipLeftDistance_setting = 0.07799101;
+            double SpineDistance_setting = -0.16977133;
+            double HipRightDistance_setting = 0.09750411;
+            double Constant = 9.86741084;
+
+            double score = (R_TH_K11 * rightThighLength)
+                + (L_TH_K12 * leftThighLength)
+                + (R_LG_K13 * rightLegLength)
+                + (L_LG_K14 * leftLegLength)
+                + (R_FT_K15 * rightFootLength)
+                + (L_FT_K16 * leftFootLength)
+                + (Trunk_K17 * trunkLength)
+                + (HipLeftDistance_setting * hipLeftDistanceSetting)
+                + (SpineDistance_setting * spineDistanceSetting)
+                + (HipRightDistance_setting * hipRightDistanceSetting)
+                + (Constant);
+
+            double predicted = PredictedValue(score);
+
+            //Console.WriteLine("TAI1_7:");
+            //Console.WriteLine(R_TH_K11 +"*"+ rightThighLength);
+            //Console.WriteLine(L_TH_K12 + "*" + leftThighLength);
+            //Console.WriteLine(R_LG_K13 + "*" + rightLegLength);
+            //Console.WriteLine(L_LG_K14 + "*" + leftLegLength);
+            //Console.WriteLine(R_FT_K15 + "*" + rightFootLength);
+            //Console.WriteLine(L_FT_K16 + "*" + leftFootLength);
+            //Console.WriteLine(Trunk_K17 + "*" + trunkLength);
+            //Console.WriteLine(HipLeftDistance_setting + "*" + hipLeftDistanceSetting);
+            //Console.WriteLine(SpineDistance_setting + "*" + spineDistanceSetting);
+            //Console.WriteLine(HipRightDistance_setting + "*" + hipRightDistanceSetting);
+            //Console.WriteLine(Constant);
+            //Console.WriteLine("1_7 = " + score);
+
+            if (predicted <= CutValue1_7Calculated)
+            {
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
+
+        }
+
+
+
+
+        /**********************************
+         * OUTPUTS
+         * ********************************/
+
+
         /// <summary>
-        /// Outputs a CSV file
+        /// Outputs file named OutputTAI.csv, containing TAI scores for each subject
         /// </summary>
         public void OutputTAI()
         {
-            System.IO.StreamWriter file = new System.IO.StreamWriter(TAIOutputFile,true);
+            System.IO.StreamWriter file = new System.IO.StreamWriter(TAIOutputFile, true);
+            //TODO: put star if something is wrong
+
+
             file.WriteLine("{0},{1},{2},{3},{4},{5},{6}",
                            subjectNum, testNum, TAI1_1,
                            TAI1_2, TAI1_3, TAI1_6, TAI1_7);
             file.Close();
+
         }
 
+        /// <summary>
+        /// Outputs JointDistance.csv
+        /// </summary>
+        public void OutputJointDistance()
+        {
 
-        public void OutputJointDistance(){           
-            System.IO.StreamWriter file = new System.IO.StreamWriter(distanceOutputFile,true);
-			file.WriteLine("{0},{1},{2},{3},{4}," +
-						   "{5},{6},{7},{8},{9}," +
-						   "{10},{11},{12},{13},{14}," +
-						   "{15},{16},{17}",
-						   subjectNum, testNum, spineBase_x, spineBase_y, hipLeft_x,
-						   hipLeft_y, hipRight_x, hipRight_y, spineBase_y_maxmin, hipRight_maxmin,
-						   hipLeft_maxmin, kneeLeftDistance, kneeRightDistance, footLeftDistance, footRightDistance,
-						   ankleLeftDistance, ankleRightDistance, hipLeftDistance, hipRightDistance, spineDistance,
-						   hipAngleAtMin, hipAngleAtMax, shoulderAngleAtMin, shoulderAngleAtMax);
-            file.Close();
-		}
+            //if (Convert.ToInt32(testNum) == 1)
+            //{
+                System.IO.StreamWriter file = new System.IO.StreamWriter(distanceOutputFile, true);
 
-        public void OutputVariables(){
-            System.IO.StreamWriter file = new System.IO.StreamWriter(variableOutputFile,true);
+                file.WriteLine("{0},{1},{2},{3},{4}," +
+                               "{5},{6},{7},{8},{9}," +
+                               "{10},{11},{12},{13},{14}," +
+                               "{15},{16},{17}",
+                               subjectNum, rightHandTipSize, leftHandTipSize, rightHandThumbSize,
+                               leftHandThumbSize, rightUpperArmLength, leftUpperArmLength, rightForearmLength, leftForearmLength,
+                               shoulderLength, hipLength, rightThighLength, leftThighLength, rightLegLength,
+                               leftLegLength, rightFootLength, leftFootLength, trunkLength);
+                file.Close();
+            }
+        //}
+
+        /// <summary>
+        /// Outputs the Variables.csv
+        /// </summary>
+        public void OutputVariables()
+        {
+
+            System.IO.StreamWriter file = new System.IO.StreamWriter(variableOutputFile, true);
             file.WriteLine("{0},{1},{2},{3},{4}," +
-                           "{5},{6},{7},{8},{9}," +                        
-                           "{10},{11},{12},{13},{14}," +                        
-                           " {15},{16},{17},{18},{19}," +                          
-                           "{20},{21}",
-                           spineBase_x, spineBase_y, hipLeft_x, hipLeft_y, hipRight_x,
-                           hipRight_y, spineBase_y_maxmin, hipRight_maxmin, hipLeft_maxmin, kneeLeftDistance,
-                           kneeRightDistance, footLeftDistance, footRightDistance, ankleLeftDistance, ankleRightDistance,
-                           hipLeftDistance, hipRightDistance, spineDistance,hipAngleAtMin, hipAngleAtMax, 
-                           shoulderAngleAtMin, shoulderAngleAtMax);
+                           "{5},{6},{7},{8},{9}," +
+                           "{10},{11},{12},{13},{14}," +
+                           "{15},{16},{17},{18},{19}," +
+                           "{20},{21},{22},{23}",
+                           subjectNum, testNum, spineBase_x, hipLeft_x, hipRight_x, spineBase_y_trail, hipLeft_y_trail, hipRight_y_trail, kneeLeftDistanceSetting, footLeftDistanceSetting,
+                           ankleLeftDistanceSetting, hipLeftDistanceSetting, spineDistanceSetting, hipAngleStart_setting, shoulderAngleStart_setting,
+                           kneeRightDistanceSetting, footRightDistanceSetting, ankleRightDistanceSetting, hipRightDistanceSetting, hipAngleatEnd_setting,
+                           shoulderAngleatEnd_setting, spineBase_y_maxmin_transfer, hipRight_maxmin_transfer, hipLeft_maxmin_transfer);
+
             file.Close();
+        }
+
+        /// <summary>
+        /// Outputs the comparison file. Mostyl for testing purposes
+        /// </summary>
+		public void OutputComparison()
+        {
+            System.IO.StreamWriter file = new System.IO.StreamWriter(comparisonOutputFile, true);
+            file.WriteLine("{0},{1},{2},{3},{4}," +
+                           "{5},{6},{7},{8},{9}," +
+                           "{10},{11}",
+                           subjectNum, testNum, TAI1_1, calculatedTAI1_1, TAI1_2, calculatedTAI1_2, TAI1_3, calculatedTAI1_3, TAI1_6, calculatedTAI1_6,
+                          TAI1_7, calculatedTAI1_7);
+
+            file.Close();
+        }
+
+        private double CalculateStartFrame()
+        {
+            //need to convert this:
+            //data = csvread('s01_lb02_p.csv', 1, 1);  **read csv into array structure, starting at row 1,1**
+
+            String[] spineData = new String[numRows];// = new String[numRows];
+            String[] time = new String[numRows];
+
+           //DONE spine = data(:, 2); **spine = array of only row 2**
+           //DONE time = data(:, 1) / 1000; **time = array of row 1 / 1000**
+
+            for(int i = 1; i < numRows; i++)
+            {
+                spineData[i-1] = data[i][2];
+                time[i-1] = data[i][1];
+            }
+
+            double[] spineDiff = new double[spineData.Length-1];
+            for(int i = 1; i < spineData.Length-1; i++ )
+            {
+                spineDiff[i-1]  = Convert.ToDouble(spineData[i]) - Convert.ToDouble(spineData[i - 1]);   
+            }
+            Array.Sort(spineDiff);
+            for(int i = 0; i < spineDiff.Length; i++)
+            {
+                Console.WriteLine(spineDiff[i]);
+            }
+
+            // startindex = find(diff(spine) < -40); **take difference of spine (spine[i]-spine[i-1], returns array of n-1) and return an array of the indicies that are less than 40
+            //startIndex is NOT used again!
+
+            // x = diff((-spine)); **take differences of negative spine vector**
+            double[] negSpineDiff = new double[spineData.Length - 1];
+            for (int i = 1; i < spineData.Length; i++)
+            {
+                negSpineDiff[i-1] = (Convert.ToDouble(spineData[i])*-1) - (Convert.ToDouble(spineData[i - 1])*-1);
+            }
+
+
+
+            //???
+            // [b, a] = butter(4, 0.1);
+            // F = filter(b, a, spine);
+            // y = diff(f);  ***NOT USED AGAIN!**
+
+
+
+            //[pks, locs]=findpeaks(-f,'minpeakprominence',1,'minpeakheight',10,'minpeakwidth',10);
+            //find local maxima and indecies, 
+
+
+
+            //[pks2, locs2]=findpeaks(f,'minpeakprominence',1,'minpeakheight',5,'minpeakwidth',5);
+            // m=size(pks2);
+
+            // a=1;
+            // b=1;
+            // for i=1:locs(1)
+            //    if abs(x(i))<10 
+            //        if abs(x(i+1))<10
+            //            if abs(x(i+2))<10
+            //                if abs(x(i+3))<10
+            //                    if abs(x(i+4))<10
+            //                        if abs(x(i+5))<10
+            //                            if spine(i+4)>-50
+
+            //                             start(a)=i+6;
+            //                                a=a+1;
+            //                            end
+            //                     end
+
+            //                 end
+            //             end
+
+            //         end
+            //     end
+            // end
+            // end
+            // figure(1)
+            // plot(spine)
+            // startpoint=start(a-1)
+            //endpoint=locs(1)
+
+
+
+            return 0;
+        }
+        private double CalculateEndFrame()
+        {
+
+            return 0;
         }
     }
 }

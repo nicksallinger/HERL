@@ -1,141 +1,176 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Diagnostics;
 
 namespace Project1
 {
-    
-    class MainClass
+    /*
+     * Transfer files must be named in format: S##_LB##_P.csv
+     * Static files must be named in format: S##_ST##_P.csv
+     * 
+     * Sensitive to data that it is parsing, instead of putting "na" for uncollected data, please
+     * use 0's 
+     * 
+     * If not data is available for a subject, please still include 5 rows of 0s, as the alignment of 5 tests
+     * per subject with 5 a
+     */
+    public class MainCLS
     {
-        //public static List<Subject> list;
+          public struct AnthroData
+        {
+            public String subNum;
+            public int testNum;
+            public int start;
+            public int end;
+            public double mass;
+            public double height;
+            public double RUA_Length;
+            public double LUA_Length;
+            public double R_Forearm_Length;
+            public double L_Forearm_Length;
+            public double chestCircumference;
+            public double waistCircumference;
+            public double trunkLength;
+            public double R_Thigh_Length;
+            public double L_Thigh_Length;
+            public double R_Leg_Length;
+            public double L_Leg_Length;
+            public double R_Foot_Length;
+            public double L_Foot_Length;
+            public double wheelchairHeight;
+
+        }
+
         public static int numCols = 77;
 
         public static void Main(string[] args)
         {
-            //no 55
-            /* CASE 1:
-             * This is for the case of 
-             * getting all files in a directory and 
-             * doing calculations on all of them
-             */
-            //initialized to 500 to not have to grow as more are added, will accomodate 100 subjects with 5 tests each          
-            //list = new List<Subject>(500);
-            //gets all files that end in .csv in named directory
-            //TODO: change to current directory
-            String[] allfiles = System.IO.Directory.GetFiles("/Users/nicholassallinger/HERL/RawData", "*.csv", System.IO.SearchOption.AllDirectories);
-            StreamReader reader = new StreamReader("/Users/nicholassallinger/HERL/SetupTransferFrames.txt");
 
-            //STATIC TRIALS
-            String[] staticFiles = System.IO.Directory.GetFiles("/Users/nicholassallinger/HERL/RawData/StaticTrials", "*.csv", System.IO.SearchOption.AllDirectories);
-            StreamReader staticrReader = new StreamReader("/Users/nicholassallinger/HERL/SetupTransferFrames.txt");
+            //This all runs off of being in the directory *****
+            // When this changes the index of checking the subject id # and test # will have to change according to the new one
+
+
+            //Transfer files must be in this directory
+
+            String[] allfiles = Directory.GetFiles(@"C:\Users\Kinect\Desktop\KinectFiles\LevelBenchTransfers\","*.csv");
+            //frames and anthropometric data that is being read in must be in this file
+            StreamReader reader = new StreamReader(@"C:\Users\Kinect\Desktop\KinectFiles\SetupTransferFrames.txt");
+
+            //gets the static hold file to use for joint distance measurements, Static trials must be in a seperate folder, named below
+            String[] staticFiles = Directory.GetFiles(@"C:\Users\Kinect\Desktop\KinectFiles\Static Trials\", "*.csv");
+            
+
+            AnthroData newSub;
 
             Subject temp = null;
             String staticFile = null;
-            int start = 0;
-            int end = 0;
 
-
+            newSub.height = 0;
+            newSub.start = 0;
+            newSub.end = 0;
+            newSub.mass = 0;
+            newSub.height = 0;
+            newSub.RUA_Length = 0;
+            newSub.LUA_Length = 0;
+            newSub.R_Forearm_Length = 0;
+            newSub.L_Forearm_Length = 0;
+            newSub.chestCircumference = 0;
+            newSub.waistCircumference = 0;
+            newSub.trunkLength = 0;
+            newSub.R_Thigh_Length = 0;
+            newSub.L_Thigh_Length = 0;
+            newSub.R_Leg_Length = 0;
+            newSub.L_Leg_Length = 0;
+            newSub.R_Foot_Length = 0;
+            newSub.L_Foot_Length = 0;
+            newSub.wheelchairHeight = 0;
+            //Sets up the output file header column
             Subject.SetupOutputFiles();
-            //for all of the .csv files, creat a new Subject object initialized with the filename and frame data
-            //if framedata is not available, initialized with 0,0
-            for (int i = 0; i < 51; i++)
-            {
 
+            //for all of the .csv files, creat a new Subject object initialized with the filename and frame data
+
+            //FOR ALL .csv files in that directory, do calculations. Make sure there are no other .csv files in the directory beside the transfers, not even static trials
+            for (int i = 0; i < 1; i++)//allfiles.Length; i++)
+            {   //gets frame data
                 if (!reader.EndOfStream)
                 {
                     String[] line = reader.ReadLine().Split();
                     try
                     {
-                        start = Int32.Parse(line[0]);
-                        end = Int32.Parse(line[1]);
+                        newSub.start = Int32.Parse(line[2]);
+                        newSub.end = Int32.Parse(line[3]);
                     }
                     catch (FormatException)
                     {
 
                     }
-                    //Console.WriteLine(line[2]);
-                    double mass = Double.Parse(line[2]);
-                    double height = Double.Parse(line[3]);
-                    double chestCircumference = Double.Parse(line[4]);
-                    double waistCircumference = Double.Parse(line[5]);
-                    double trunkLength = Double.Parse(line[6]);
-                    double wheelchairHeight = Double.Parse(line[7]);
 
-                    if (line[0] == "na") { start = 0; }
-                    if (line[1] == "na") { end = 0; }
-                    if (line[2] == "na") { mass = 0; }
-                    if (line[3] == "na") { height = 0; }
-                    if (line[4] == "na") { chestCircumference = 0; }
-                    if (line[5] == "na") { waistCircumference = 0; }
-                    if (line[6] == "na") { trunkLength = 0; }
-                    if (line[7] == "na") { wheelchairHeight = 0; }
+                    /*
+                     * Input file format:
+                     * Subject# test# startFrame endFrame mass height RUA LUA RForearm LForearm chestCircumference waistCircumference trunkLength RThigh LThigh RLeg LLeg RFoot LFoot wcHeigh
+                     */
 
+                    newSub.subNum = line[0];
+                    newSub.testNum = Int32.Parse(line[1]);
+                    newSub.mass = Double.Parse(line[4]);
+                    newSub.height = Double.Parse(line[5]);
+                    newSub.RUA_Length = Double.Parse(line[6]);
+                    newSub.LUA_Length = Double.Parse(line[7]);
+                    newSub.R_Forearm_Length = Double.Parse(line[8]);
+                    newSub.L_Forearm_Length = Double.Parse(line[9]);
+                    newSub.chestCircumference = Double.Parse(line[10]);
+                    newSub.waistCircumference = Double.Parse(line[11]);
+                    newSub.trunkLength = Double.Parse(line[12]);
+                    newSub.R_Thigh_Length = Double.Parse(line[13]);
+                    newSub.L_Thigh_Length = Double.Parse(line[14]);
+                    newSub.R_Leg_Length = Double.Parse(line[15]);
+                    newSub.L_Leg_Length = Double.Parse(line[16]);
+                    newSub.R_Foot_Length = Double.Parse(line[17]);
+                    newSub.L_Foot_Length = Double.Parse(line[18]);
+                    newSub.wheelchairHeight = Double.Parse(line[19]);
+
+                    //TODO: need to come first
+                    //if (line[0] == "na") { start = 0; }
+                    //if (line[1] == "na") { end = 0; }
+                    //if (line[2] == "na") { mass = 0; }
+                    //if (line[3] == "na") { height = 0; }
+                    //if (line[4] == "na") { chestCircumference = 0; }
+                    //if (line[5] == "na") { waistCircumference = 0; }
+                    //if (line[6] == "na") { trunkLength = 0; }
+                    //if (line[7] == "na") { wheelchairHeight = 0; }
+
+                    //matches the static hold file to accompanying subjects transfer files
+                    //File name is very important
+                    //TODO: create pattern matching that removes the need to look at entire directory listing
+
+                    //This will need to change if the directory changes from /Users/nicholassallinger/HERL/RawData
+                    String subNumtemp = null;
 
                     foreach (String s in staticFiles)
                     {
-                        //54,53
 
                         char[] tempFile = allfiles[i].ToCharArray();
                         char[] staticTemp = s.ToCharArray();
 
-                        //Console.WriteLine(tempFile[39].ToString() + tempFile[40].ToString() + "--" + s[52].ToString() + s[53].ToString());
-
-
-                        if (tempFile[39] == s[52] && tempFile[40] == s[53])
+                        if (tempFile[57] == s[51] && tempFile[58] == s[52])
                         {
+                           
                             staticFile = s;
+                            subNumtemp = tempFile[51].ToString() + tempFile[52].ToString();
                             break;
                         }
-
                     }
-                    //Console.WriteLine("file = " + allfiles[i]);
-                    //Console.WriteLine("staticFile " + staticFile);
-                    temp = new Subject(allfiles[i], staticFile, start, end, mass, height, chestCircumference, waistCircumference, trunkLength, wheelchairHeight);
+                    temp = new Subject(allfiles[i], staticFile, newSub);
+
                 }
-
-
-                //Console.WriteLine("Added #{0}", i%5);
-                //list.Add(temp);
                 temp.OutputToTxt();
+
             }
-
-
-
-            /*
-            This is for a single subject
-            */
-
-            /*//CASE 2
-            Console.WriteLine("Enter filename");
-            String filename = Console.ReadLine();
-
-            Console.WriteLine("Enter Start Frame: ");
-            int start = int.Parse(Console.ReadLine());
-
-            Console.WriteLine("Enter End Frame: ");
-            int end = int.Parse(Console.ReadLine());
-
-            Subject subject = new Subject(filename, start, end);
-
-
-
-
-            subject.OutputToTxt();
-
-            */
-
-
-
-            /*///CASE3: test first file
-            Subject subject = new Subject("/Users/nicholassallinger/HERL/RawData/S01_LB01_P.csv",170,190);
-            //Console.WriteLine(subject.SubjectNum);
-            //subject.OutputToTxt();
-            */
-
-
         }
     }
 }
 
-        
-    
+
+
+
