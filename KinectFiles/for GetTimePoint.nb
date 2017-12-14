@@ -1,0 +1,1530 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     62205,       1522]
+NotebookOptionsPosition[     61865,       1505]
+NotebookOutlinePosition[     62224,       1521]
+CellTagsIndexPosition[     62181,       1518]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"name", "=", 
+   RowBox[{"FileNames", "[", 
+    RowBox[{"\"\<*.csv\>\"", ",", 
+     RowBox[{"NotebookDirectory", "[", "]"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Manipulate", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"data", "=", 
+     RowBox[{"Flatten", "[", 
+      RowBox[{"Import", "[", 
+       RowBox[{
+        RowBox[{"name", "[", 
+         RowBox[{"[", "j", "]"}], "]"}], ",", "\"\<CSV\>\""}], "]"}], "]"}]}],
+     ";", "\[IndentingNewLine]", 
+    RowBox[{"amtotal", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"data", "[", 
+        RowBox[{"[", 
+         RowBox[{"39", "+", 
+          RowBox[{"77", "*", 
+           RowBox[{"(", 
+            RowBox[{"i", "-", "1"}], ")"}]}]}], "]"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "2", ",", 
+         RowBox[{
+          RowBox[{"Length", "[", "data", "]"}], "/", "77"}]}], "}"}]}], 
+      "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"ctotal", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"data", "[", 
+        RowBox[{"[", 
+         RowBox[{"3", "+", 
+          RowBox[{"77", "*", 
+           RowBox[{"(", 
+            RowBox[{"i", "-", "1"}], ")"}]}]}], "]"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "2", ",", 
+         RowBox[{
+          RowBox[{"Length", "[", "data", "]"}], "/", "77"}]}], "}"}]}], 
+      "]"}]}], ";", 
+    RowBox[{"dtotal", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"data", "[", 
+        RowBox[{"[", 
+         RowBox[{"4", "+", 
+          RowBox[{"77", "*", 
+           RowBox[{"(", 
+            RowBox[{"i", "-", "1"}], ")"}]}]}], "]"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "2", ",", 
+         RowBox[{
+          RowBox[{"Length", "[", "data", "]"}], "/", "77"}]}], "}"}]}], 
+      "]"}]}], ";", 
+    RowBox[{"aztotal", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"data", "[", 
+        RowBox[{"[", 
+         RowBox[{"52", "+", 
+          RowBox[{"77", "*", 
+           RowBox[{"(", 
+            RowBox[{"i", "-", "1"}], ")"}]}]}], "]"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "2", ",", 
+         RowBox[{
+          RowBox[{"Length", "[", "data", "]"}], "/", "77"}]}], "}"}]}], 
+      "]"}]}], ";", 
+    RowBox[{"antotal", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"data", "[", 
+        RowBox[{"[", 
+         RowBox[{"40", "+", 
+          RowBox[{"77", "*", 
+           RowBox[{"(", 
+            RowBox[{"i", "-", "1"}], ")"}]}]}], "]"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "2", ",", 
+         RowBox[{
+          RowBox[{"Length", "[", "data", "]"}], "/", "77"}]}], "}"}]}], 
+      "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"aptotal", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"data", "[", 
+        RowBox[{"[", 
+         RowBox[{"42", "+", 
+          RowBox[{"77", "*", 
+           RowBox[{"(", 
+            RowBox[{"i", "-", "1"}], ")"}]}]}], "]"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "2", ",", 
+         RowBox[{
+          RowBox[{"Length", "[", "data", "]"}], "/", "77"}]}], "}"}]}], 
+      "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"aqtotal", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"data", "[", 
+        RowBox[{"[", 
+         RowBox[{"43", "+", 
+          RowBox[{"77", "*", 
+           RowBox[{"(", 
+            RowBox[{"i", "-", "1"}], ")"}]}]}], "]"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "2", ",", 
+         RowBox[{
+          RowBox[{"Length", "[", "data", "]"}], "/", "77"}]}], "}"}]}], 
+      "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"artotal", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"data", "[", 
+        RowBox[{"[", 
+         RowBox[{"44", "+", 
+          RowBox[{"77", "*", 
+           RowBox[{"(", 
+            RowBox[{"i", "-", "1"}], ")"}]}]}], "]"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "2", ",", 
+         RowBox[{
+          RowBox[{"Length", "[", "data", "]"}], "/", "77"}]}], "}"}]}], 
+      "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"bbtotal", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"data", "[", 
+        RowBox[{"[", 
+         RowBox[{"54", "+", 
+          RowBox[{"77", "*", 
+           RowBox[{"(", 
+            RowBox[{"i", "-", "1"}], ")"}]}]}], "]"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "2", ",", 
+         RowBox[{
+          RowBox[{"Length", "[", "data", "]"}], "/", "77"}]}], "}"}]}], 
+      "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"bctotal", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"data", "[", 
+        RowBox[{"[", 
+         RowBox[{"55", "+", 
+          RowBox[{"77", "*", 
+           RowBox[{"(", 
+            RowBox[{"i", "-", "1"}], ")"}]}]}], "]"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "2", ",", 
+         RowBox[{
+          RowBox[{"Length", "[", "data", "]"}], "/", "77"}]}], "}"}]}], 
+      "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"bdtotal", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"data", "[", 
+        RowBox[{"[", 
+         RowBox[{"56", "+", 
+          RowBox[{"77", "*", 
+           RowBox[{"(", 
+            RowBox[{"i", "-", "1"}], ")"}]}]}], "]"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "2", ",", 
+         RowBox[{
+          RowBox[{"Length", "[", "data", "]"}], "/", "77"}]}], "}"}]}], 
+      "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"betotal", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"data", "[", 
+        RowBox[{"[", 
+         RowBox[{"48", "+", 
+          RowBox[{"77", "*", 
+           RowBox[{"(", 
+            RowBox[{"i", "-", "1"}], ")"}]}]}], "]"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "2", ",", 
+         RowBox[{
+          RowBox[{"Length", "[", "data", "]"}], "/", "77"}]}], "}"}]}], 
+      "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"bftotal", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"data", "[", 
+        RowBox[{"[", 
+         RowBox[{"49", "+", 
+          RowBox[{"77", "*", 
+           RowBox[{"(", 
+            RowBox[{"i", "-", "1"}], ")"}]}]}], "]"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "2", ",", 
+         RowBox[{
+          RowBox[{"Length", "[", "data", "]"}], "/", "77"}]}], "}"}]}], 
+      "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"bgtotal", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"data", "[", 
+        RowBox[{"[", 
+         RowBox[{"50", "+", 
+          RowBox[{"77", "*", 
+           RowBox[{"(", 
+            RowBox[{"i", "-", "1"}], ")"}]}]}], "]"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "2", ",", 
+         RowBox[{
+          RowBox[{"Length", "[", "data", "]"}], "/", "77"}]}], "}"}]}], 
+      "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"bhtotal", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"data", "[", 
+        RowBox[{"[", 
+         RowBox[{"60", "+", 
+          RowBox[{"77", "*", 
+           RowBox[{"(", 
+            RowBox[{"i", "-", "1"}], ")"}]}]}], "]"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "2", ",", 
+         RowBox[{
+          RowBox[{"Length", "[", "data", "]"}], "/", "77"}]}], "}"}]}], 
+      "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"bitotal", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"data", "[", 
+        RowBox[{"[", 
+         RowBox[{"61", "+", 
+          RowBox[{"77", "*", 
+           RowBox[{"(", 
+            RowBox[{"i", "-", "1"}], ")"}]}]}], "]"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "2", ",", 
+         RowBox[{
+          RowBox[{"Length", "[", "data", "]"}], "/", "77"}]}], "}"}]}], 
+      "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"bjtotal", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"data", "[", 
+        RowBox[{"[", 
+         RowBox[{"62", "+", 
+          RowBox[{"77", "*", 
+           RowBox[{"(", 
+            RowBox[{"i", "-", "1"}], ")"}]}]}], "]"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "2", ",", 
+         RowBox[{
+          RowBox[{"Length", "[", "data", "]"}], "/", "77"}]}], "}"}]}], 
+      "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"anrxtotal", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"data", "[", 
+        RowBox[{"[", 
+         RowBox[{"57", "+", 
+          RowBox[{"77", "*", 
+           RowBox[{"(", 
+            RowBox[{"i", "-", "1"}], ")"}]}]}], "]"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "2", ",", 
+         RowBox[{
+          RowBox[{"Length", "[", "data", "]"}], "/", "77"}]}], "}"}]}], 
+      "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"anrytotal", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"data", "[", 
+        RowBox[{"[", 
+         RowBox[{"58", "+", 
+          RowBox[{"77", "*", 
+           RowBox[{"(", 
+            RowBox[{"i", "-", "1"}], ")"}]}]}], "]"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "2", ",", 
+         RowBox[{
+          RowBox[{"Length", "[", "data", "]"}], "/", "77"}]}], "}"}]}], 
+      "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"anrztotal", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"data", "[", 
+        RowBox[{"[", 
+         RowBox[{"59", "+", 
+          RowBox[{"77", "*", 
+           RowBox[{"(", 
+            RowBox[{"i", "-", "1"}], ")"}]}]}], "]"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "2", ",", 
+         RowBox[{
+          RowBox[{"Length", "[", "data", "]"}], "/", "77"}]}], "}"}]}], 
+      "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"anlxtotal", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"data", "[", 
+        RowBox[{"[", 
+         RowBox[{"45", "+", 
+          RowBox[{"77", "*", 
+           RowBox[{"(", 
+            RowBox[{"i", "-", "1"}], ")"}]}]}], "]"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "2", ",", 
+         RowBox[{
+          RowBox[{"Length", "[", "data", "]"}], "/", "77"}]}], "}"}]}], 
+      "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"anlytotal", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"data", "[", 
+        RowBox[{"[", 
+         RowBox[{"46", "+", 
+          RowBox[{"77", "*", 
+           RowBox[{"(", 
+            RowBox[{"i", "-", "1"}], ")"}]}]}], "]"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "2", ",", 
+         RowBox[{
+          RowBox[{"Length", "[", "data", "]"}], "/", "77"}]}], "}"}]}], 
+      "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"anlztotal", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"data", "[", 
+        RowBox[{"[", 
+         RowBox[{"47", "+", 
+          RowBox[{"77", "*", 
+           RowBox[{"(", 
+            RowBox[{"i", "-", "1"}], ")"}]}]}], "]"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "2", ",", 
+         RowBox[{
+          RowBox[{"Length", "[", "data", "]"}], "/", "77"}]}], "}"}]}], 
+      "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"hiprxtotal", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"data", "[", 
+        RowBox[{"[", 
+         RowBox[{"51", "+", 
+          RowBox[{"77", "*", 
+           RowBox[{"(", 
+            RowBox[{"i", "-", "1"}], ")"}]}]}], "]"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "2", ",", 
+         RowBox[{
+          RowBox[{"Length", "[", "data", "]"}], "/", "77"}]}], "}"}]}], 
+      "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"hiprytotal", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"data", "[", 
+        RowBox[{"[", 
+         RowBox[{"52", "+", 
+          RowBox[{"77", "*", 
+           RowBox[{"(", 
+            RowBox[{"i", "-", "1"}], ")"}]}]}], "]"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "2", ",", 
+         RowBox[{
+          RowBox[{"Length", "[", "data", "]"}], "/", "77"}]}], "}"}]}], 
+      "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"hiprztotal", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"data", "[", 
+        RowBox[{"[", 
+         RowBox[{"53", "+", 
+          RowBox[{"77", "*", 
+           RowBox[{"(", 
+            RowBox[{"i", "-", "1"}], ")"}]}]}], "]"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "2", ",", 
+         RowBox[{
+          RowBox[{"Length", "[", "data", "]"}], "/", "77"}]}], "}"}]}], 
+      "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"hiplxtotal", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"data", "[", 
+        RowBox[{"[", 
+         RowBox[{"39", "+", 
+          RowBox[{"77", "*", 
+           RowBox[{"(", 
+            RowBox[{"i", "-", "1"}], ")"}]}]}], "]"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "2", ",", 
+         RowBox[{
+          RowBox[{"Length", "[", "data", "]"}], "/", "77"}]}], "}"}]}], 
+      "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"hiplytotal", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"data", "[", 
+        RowBox[{"[", 
+         RowBox[{"40", "+", 
+          RowBox[{"77", "*", 
+           RowBox[{"(", 
+            RowBox[{"i", "-", "1"}], ")"}]}]}], "]"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "2", ",", 
+         RowBox[{
+          RowBox[{"Length", "[", "data", "]"}], "/", "77"}]}], "}"}]}], 
+      "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"hiplztotal", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"data", "[", 
+        RowBox[{"[", 
+         RowBox[{"41", "+", 
+          RowBox[{"77", "*", 
+           RowBox[{"(", 
+            RowBox[{"i", "-", "1"}], ")"}]}]}], "]"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "2", ",", 
+         RowBox[{
+          RowBox[{"Length", "[", "data", "]"}], "/", "77"}]}], "}"}]}], 
+      "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"spinextotal", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"data", "[", 
+        RowBox[{"[", 
+         RowBox[{"3", "+", 
+          RowBox[{"77", "*", 
+           RowBox[{"(", 
+            RowBox[{"i", "-", "1"}], ")"}]}]}], "]"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "2", ",", 
+         RowBox[{
+          RowBox[{"Length", "[", "data", "]"}], "/", "77"}]}], "}"}]}], 
+      "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"spineytotal", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"data", "[", 
+        RowBox[{"[", 
+         RowBox[{"4", "+", 
+          RowBox[{"77", "*", 
+           RowBox[{"(", 
+            RowBox[{"i", "-", "1"}], ")"}]}]}], "]"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "2", ",", 
+         RowBox[{
+          RowBox[{"Length", "[", "data", "]"}], "/", "77"}]}], "}"}]}], 
+      "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"spineztotal", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"data", "[", 
+        RowBox[{"[", 
+         RowBox[{"5", "+", 
+          RowBox[{"77", "*", 
+           RowBox[{"(", 
+            RowBox[{"i", "-", "1"}], ")"}]}]}], "]"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "2", ",", 
+         RowBox[{
+          RowBox[{"Length", "[", "data", "]"}], "/", "77"}]}], "}"}]}], 
+      "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"srxtotal", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"data", "[", 
+        RowBox[{"[", 
+         RowBox[{"27", "+", 
+          RowBox[{"77", "*", 
+           RowBox[{"(", 
+            RowBox[{"i", "-", "1"}], ")"}]}]}], "]"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "2", ",", 
+         RowBox[{
+          RowBox[{"Length", "[", "data", "]"}], "/", "77"}]}], "}"}]}], 
+      "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"srytotal", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"data", "[", 
+        RowBox[{"[", 
+         RowBox[{"28", "+", 
+          RowBox[{"77", "*", 
+           RowBox[{"(", 
+            RowBox[{"i", "-", "1"}], ")"}]}]}], "]"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "2", ",", 
+         RowBox[{
+          RowBox[{"Length", "[", "data", "]"}], "/", "77"}]}], "}"}]}], 
+      "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"srztotal", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"data", "[", 
+        RowBox[{"[", 
+         RowBox[{"29", "+", 
+          RowBox[{"77", "*", 
+           RowBox[{"(", 
+            RowBox[{"i", "-", "1"}], ")"}]}]}], "]"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "2", ",", 
+         RowBox[{
+          RowBox[{"Length", "[", "data", "]"}], "/", "77"}]}], "}"}]}], 
+      "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"slxtotal", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"data", "[", 
+        RowBox[{"[", 
+         RowBox[{"15", "+", 
+          RowBox[{"77", "*", 
+           RowBox[{"(", 
+            RowBox[{"i", "-", "1"}], ")"}]}]}], "]"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "2", ",", 
+         RowBox[{
+          RowBox[{"Length", "[", "data", "]"}], "/", "77"}]}], "}"}]}], 
+      "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"slytotal", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"data", "[", 
+        RowBox[{"[", 
+         RowBox[{"16", "+", 
+          RowBox[{"77", "*", 
+           RowBox[{"(", 
+            RowBox[{"i", "-", "1"}], ")"}]}]}], "]"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "2", ",", 
+         RowBox[{
+          RowBox[{"Length", "[", "data", "]"}], "/", "77"}]}], "}"}]}], 
+      "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"slztotal", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"data", "[", 
+        RowBox[{"[", 
+         RowBox[{"17", "+", 
+          RowBox[{"77", "*", 
+           RowBox[{"(", 
+            RowBox[{"i", "-", "1"}], ")"}]}]}], "]"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "2", ",", 
+         RowBox[{
+          RowBox[{"Length", "[", "data", "]"}], "/", "77"}]}], "}"}]}], 
+      "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"min", "=", "MIN"}], ";", 
+    RowBox[{"max", "=", "MAX"}], ";", "\[IndentingNewLine]", 
+    RowBox[{"resc", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"ctotal", "[", 
+        RowBox[{"[", "i", "]"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "min", ",", "max"}], "}"}]}], "]"}]}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{"resd", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"dtotal", "[", 
+        RowBox[{"[", "i", "]"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "min", ",", "max"}], "}"}]}], "]"}]}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{"resaz", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"aztotal", "[", 
+        RowBox[{"[", "i", "]"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "min", ",", "max"}], "}"}]}], "]"}]}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{"resan", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"antotal", "[", 
+        RowBox[{"[", "i", "]"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "min", ",", "max"}], "}"}]}], "]"}]}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Grid", "[", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"ListPlot", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"ctotal", ",", "resc", ",", 
+            RowBox[{"LowpassFilter", "[", 
+             RowBox[{"ctotal", ",", "0.25"}], "]"}]}], "}"}], ",", 
+          RowBox[{"ImageSize", "\[Rule]", "Large"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"PlotLabel", "\[Rule]", 
+           RowBox[{"name", "[", 
+            RowBox[{"[", "j", "]"}], "]"}]}]}], "]"}], "}"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"\"\<Spine Base X =\>\"", "<>", 
+          RowBox[{"ToString", "[", 
+           RowBox[{
+            RowBox[{"Max", "[", "ctotal", "]"}], "-", 
+            RowBox[{"Min", "[", "ctotal", "]"}]}], "]"}]}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"\"\<Spine Base Y =\>\"", "<>", 
+          RowBox[{"ToString", "[", 
+           RowBox[{
+            RowBox[{"Max", "[", "dtotal", "]"}], "-", 
+            RowBox[{"Min", "[", "dtotal", "]"}]}], "]"}]}]}], "}"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"\"\<Hip Left X =\>\"", "<>", 
+          RowBox[{"ToString", "[", 
+           RowBox[{
+            RowBox[{"Max", "[", "amtotal", "]"}], "-", 
+            RowBox[{"Min", "[", "amtotal", "]"}]}], "]"}]}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"\"\<Hip Left Y =\>\"", "<>", 
+          RowBox[{"ToString", "[", 
+           RowBox[{
+            RowBox[{"Max", "[", "antotal", "]"}], "-", 
+            RowBox[{"Min", "[", "antotal", "]"}]}], "]"}]}]}], "}"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"\"\<Hip Right X =\>\"", "<>", 
+          RowBox[{"ToString", "[", 
+           RowBox[{
+            RowBox[{"Max", "[", "hiprxtotal", "]"}], "-", 
+            RowBox[{"Min", "[", "hiprxtotal", "]"}]}], "]"}]}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"\"\<Hip Right Y =\>\"", "<>", 
+          RowBox[{"ToString", "[", 
+           RowBox[{
+            RowBox[{"Max", "[", "hiprytotal", "]"}], "-", 
+            RowBox[{"Min", "[", "hiprytotal", "]"}]}], "]"}]}]}], "}"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"\"\<Spine Base Y (max- min) = \>\"", "<>", 
+          RowBox[{"ToString", "[", 
+           RowBox[{
+            RowBox[{"Max", "[", "resd", "]"}], "-", 
+            RowBox[{"Min", "[", "resd", "]"}]}], "]"}]}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"\"\<Hip Right (max- min) = \>\"", "<>", 
+          RowBox[{"ToString", "[", 
+           RowBox[{
+            RowBox[{"Max", "[", "resaz", "]"}], "-", 
+            RowBox[{"Min", "[", "resaz", "]"}]}], "]"}]}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"\"\<Hip Left (max- min) = \>\"", "<>", 
+          RowBox[{"ToString", "[", 
+           RowBox[{
+            RowBox[{"Max", "[", "resan", "]"}], "-", 
+            RowBox[{"Min", "[", "resan", "]"}]}], "]"}]}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"\"\<Hip Left (max- min) = \>\"", "<>", 
+          RowBox[{"ToString", "[", 
+           RowBox[{
+            RowBox[{"Max", "[", "resan", "]"}], "-", 
+            RowBox[{"Min", "[", "resan", "]"}]}], "]"}]}]}], 
+        "\[IndentingNewLine]", "}"}], ",", "\[IndentingNewLine]", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"\"\<Knee Left Distance = \>\"", "<>", 
+          RowBox[{"ToString", "[", 
+           RowBox[{"\[Sqrt]", 
+            RowBox[{"(", 
+             RowBox[{
+              SuperscriptBox[
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"aptotal", "[", 
+                  RowBox[{"[", "MAX", "]"}], "]"}], "-", 
+                 RowBox[{"aptotal", "[", 
+                  RowBox[{"[", "MIN", "]"}], "]"}]}], ")"}], "2"], "+", 
+              SuperscriptBox[
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"aqtotal", "[", 
+                  RowBox[{"[", "MAX", "]"}], "]"}], "-", 
+                 RowBox[{"aqtotal", "[", 
+                  RowBox[{"[", "MIN", "]"}], "]"}]}], ")"}], "2"], "+", 
+              SuperscriptBox[
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"artotal", "[", 
+                  RowBox[{"[", "MAX", "]"}], "]"}], "-", 
+                 RowBox[{"artotal", "[", 
+                  RowBox[{"[", "MIN", "]"}], "]"}]}], ")"}], "2"]}], ")"}]}], 
+           "]"}]}], ",", "\[IndentingNewLine]", 
+         RowBox[{"\"\<Knee Right Distance = \>\"", "<>", 
+          RowBox[{"ToString", "[", 
+           RowBox[{"\[Sqrt]", 
+            RowBox[{"(", 
+             RowBox[{
+              SuperscriptBox[
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"bbtotal", "[", 
+                  RowBox[{"[", "MAX", "]"}], "]"}], "-", 
+                 RowBox[{"bbtotal", "[", 
+                  RowBox[{"[", "MIN", "]"}], "]"}]}], ")"}], "2"], "+", 
+              SuperscriptBox[
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"bctotal", "[", 
+                  RowBox[{"[", "MAX", "]"}], "]"}], "-", 
+                 RowBox[{"bctotal", "[", 
+                  RowBox[{"[", "MIN", "]"}], "]"}]}], ")"}], "2"], "+", 
+              SuperscriptBox[
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"bdtotal", "[", 
+                  RowBox[{"[", "MAX", "]"}], "]"}], "-", 
+                 RowBox[{"bdtotal", "[", 
+                  RowBox[{"[", "MIN", "]"}], "]"}]}], ")"}], "2"]}], ")"}]}], 
+           "]"}]}]}], "}"}], ",", "\[IndentingNewLine]", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"\"\<Foot Left Distance = \>\"", "<>", 
+          RowBox[{"ToString", "[", 
+           RowBox[{"\[Sqrt]", 
+            RowBox[{"(", 
+             RowBox[{
+              SuperscriptBox[
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"betotal", "[", 
+                  RowBox[{"[", "MAX", "]"}], "]"}], "-", 
+                 RowBox[{"betotal", "[", 
+                  RowBox[{"[", "MIN", "]"}], "]"}]}], ")"}], "2"], "+", 
+              SuperscriptBox[
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"bftotal", "[", 
+                  RowBox[{"[", "MAX", "]"}], "]"}], "-", 
+                 RowBox[{"bftotal", "[", 
+                  RowBox[{"[", "MIN", "]"}], "]"}]}], ")"}], "2"], "+", 
+              SuperscriptBox[
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"bgtotal", "[", 
+                  RowBox[{"[", "MAX", "]"}], "]"}], "-", 
+                 RowBox[{"bgtotal", "[", 
+                  RowBox[{"[", "MIN", "]"}], "]"}]}], ")"}], "2"]}], ")"}]}], 
+           "]"}]}], ",", "\[IndentingNewLine]", 
+         RowBox[{"\"\<Foot Right Distance = \>\"", "<>", 
+          RowBox[{"ToString", "[", 
+           RowBox[{"\[Sqrt]", 
+            RowBox[{"(", 
+             RowBox[{
+              SuperscriptBox[
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"bhtotal", "[", 
+                  RowBox[{"[", "MAX", "]"}], "]"}], "-", 
+                 RowBox[{"bhtotal", "[", 
+                  RowBox[{"[", "MIN", "]"}], "]"}]}], ")"}], "2"], "+", 
+              SuperscriptBox[
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"bitotal", "[", 
+                  RowBox[{"[", "MAX", "]"}], "]"}], "-", 
+                 RowBox[{"bitotal", "[", 
+                  RowBox[{"[", "MIN", "]"}], "]"}]}], ")"}], "2"], "+", 
+              SuperscriptBox[
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"bjtotal", "[", 
+                  RowBox[{"[", "MAX", "]"}], "]"}], "-", 
+                 RowBox[{"bjtotal", "[", 
+                  RowBox[{"[", "MIN", "]"}], "]"}]}], ")"}], "2"]}], ")"}]}], 
+           "]"}]}]}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"\"\<Ankle Left Distance = \>\"", "<>", 
+          RowBox[{"ToString", "[", 
+           RowBox[{"\[Sqrt]", 
+            RowBox[{"(", 
+             RowBox[{
+              SuperscriptBox[
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"anlxtotal", "[", 
+                  RowBox[{"[", "MAX", "]"}], "]"}], "-", 
+                 RowBox[{"anlxtotal", "[", 
+                  RowBox[{"[", "MIN", "]"}], "]"}]}], ")"}], "2"], "+", 
+              SuperscriptBox[
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"anlytotal", "[", 
+                  RowBox[{"[", "MAX", "]"}], "]"}], "-", 
+                 RowBox[{"anlytotal", "[", 
+                  RowBox[{"[", "MIN", "]"}], "]"}]}], ")"}], "2"], "+", 
+              SuperscriptBox[
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"anlztotal", "[", 
+                  RowBox[{"[", "MAX", "]"}], "]"}], "-", 
+                 RowBox[{"anlztotal", "[", 
+                  RowBox[{"[", "MIN", "]"}], "]"}]}], ")"}], "2"]}], ")"}]}], 
+           "]"}]}], ",", "\[IndentingNewLine]", 
+         RowBox[{"\"\<Ankle Right Distance = \>\"", "<>", 
+          RowBox[{"ToString", "[", 
+           RowBox[{"\[Sqrt]", 
+            RowBox[{"(", 
+             RowBox[{
+              SuperscriptBox[
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"anrxtotal", "[", 
+                  RowBox[{"[", "MAX", "]"}], "]"}], "-", 
+                 RowBox[{"anrxtotal", "[", 
+                  RowBox[{"[", "MIN", "]"}], "]"}]}], ")"}], "2"], "+", 
+              SuperscriptBox[
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"anrytotal", "[", 
+                  RowBox[{"[", "MAX", "]"}], "]"}], "-", 
+                 RowBox[{"anrytotal", "[", 
+                  RowBox[{"[", "MIN", "]"}], "]"}]}], ")"}], "2"], "+", 
+              SuperscriptBox[
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"anrztotal", "[", 
+                  RowBox[{"[", "MAX", "]"}], "]"}], "-", 
+                 RowBox[{"anrztotal", "[", 
+                  RowBox[{"[", "MIN", "]"}], "]"}]}], ")"}], "2"]}], ")"}]}], 
+           "]"}]}]}], "}"}], ",", "\[IndentingNewLine]", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"\"\<Hip Left Distance = \>\"", "<>", 
+          RowBox[{"ToString", "[", 
+           RowBox[{"\[Sqrt]", 
+            RowBox[{"(", 
+             RowBox[{
+              SuperscriptBox[
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"hiplxtotal", "[", 
+                  RowBox[{"[", "MAX", "]"}], "]"}], "-", 
+                 RowBox[{"hiplxtotal", "[", 
+                  RowBox[{"[", "MIN", "]"}], "]"}]}], ")"}], "2"], "+", 
+              SuperscriptBox[
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"hiplytotal", "[", 
+                  RowBox[{"[", "MAX", "]"}], "]"}], "-", 
+                 RowBox[{"hiplytotal", "[", 
+                  RowBox[{"[", "MIN", "]"}], "]"}]}], ")"}], "2"], "+", 
+              SuperscriptBox[
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"hiplztotal", "[", 
+                  RowBox[{"[", "MAX", "]"}], "]"}], "-", 
+                 RowBox[{"hiplztotal", "[", 
+                  RowBox[{"[", "MIN", "]"}], "]"}]}], ")"}], "2"]}], ")"}]}], 
+           "]"}]}], ",", "\[IndentingNewLine]", 
+         RowBox[{"\"\<Hip Right Distance = \>\"", "<>", 
+          RowBox[{"ToString", "[", 
+           RowBox[{"\[Sqrt]", 
+            RowBox[{"(", 
+             RowBox[{
+              SuperscriptBox[
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"hiprxtotal", "[", 
+                  RowBox[{"[", "MAX", "]"}], "]"}], "-", 
+                 RowBox[{"hiprxtotal", "[", 
+                  RowBox[{"[", "MIN", "]"}], "]"}]}], ")"}], "2"], "+", 
+              SuperscriptBox[
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"hiprytotal", "[", 
+                  RowBox[{"[", "MAX", "]"}], "]"}], "-", 
+                 RowBox[{"hiprytotal", "[", 
+                  RowBox[{"[", "MIN", "]"}], "]"}]}], ")"}], "2"], "+", 
+              SuperscriptBox[
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"hiprztotal", "[", 
+                  RowBox[{"[", "MAX", "]"}], "]"}], "-", 
+                 RowBox[{"hiprztotal", "[", 
+                  RowBox[{"[", "MIN", "]"}], "]"}]}], ")"}], "2"]}], ")"}]}], 
+           "]"}]}]}], "}"}], ",", "\[IndentingNewLine]", 
+       RowBox[{"{", 
+        RowBox[{"\"\<Spine Distance = \>\"", "<>", 
+         RowBox[{"ToString", "[", 
+          RowBox[{"\[Sqrt]", 
+           RowBox[{"(", 
+            RowBox[{
+             SuperscriptBox[
+              RowBox[{"(", 
+               RowBox[{
+                RowBox[{"spinextotal", "[", 
+                 RowBox[{"[", "MAX", "]"}], "]"}], "-", 
+                RowBox[{"spinextotal", "[", 
+                 RowBox[{"[", "MIN", "]"}], "]"}]}], ")"}], "2"], "+", 
+             SuperscriptBox[
+              RowBox[{"(", 
+               RowBox[{
+                RowBox[{"spineytotal", "[", 
+                 RowBox[{"[", "MAX", "]"}], "]"}], "-", 
+                RowBox[{"spineytotal", "[", 
+                 RowBox[{"[", "MIN", "]"}], "]"}]}], ")"}], "2"], "+", 
+             SuperscriptBox[
+              RowBox[{"(", 
+               RowBox[{
+                RowBox[{"spineztotal", "[", 
+                 RowBox[{"[", "MAX", "]"}], "]"}], "-", 
+                RowBox[{"spineztotal", "[", 
+                 RowBox[{"[", "MIN", "]"}], "]"}]}], ")"}], "2"]}], ")"}]}], 
+          "]"}]}], "}"}], ",", "\[IndentingNewLine]", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"\"\<Hip Angle at Min = \>\"", "<>", 
+          RowBox[{"ToString", "[", 
+           RowBox[{
+            FractionBox["180", "\[Pi]"], 
+            RowBox[{"ArcCos", "[", 
+             RowBox[{
+              RowBox[{"(", 
+               RowBox[{
+                RowBox[{"hiprxtotal", "[", 
+                 RowBox[{"[", "MIN", "]"}], "]"}], "-", 
+                RowBox[{"hiplxtotal", "[", 
+                 RowBox[{"[", "MIN", "]"}], "]"}]}], ")"}], "/", 
+              RowBox[{"(", 
+               RowBox[{"\[Sqrt]", 
+                RowBox[{"(", 
+                 RowBox[{
+                  SuperscriptBox[
+                   RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"hiprxtotal", "[", 
+                    RowBox[{"[", "MIN", "]"}], "]"}], "-", 
+                    RowBox[{"hiplxtotal", "[", 
+                    RowBox[{"[", "MIN", "]"}], "]"}]}], ")"}], "2"], "+", 
+                  SuperscriptBox[
+                   RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"hiprytotal", "[", 
+                    RowBox[{"[", "MIN", "]"}], "]"}], "-", 
+                    RowBox[{"hiplytotal", "[", 
+                    RowBox[{"[", "MIN", "]"}], "]"}]}], ")"}], "2"], "+", 
+                  SuperscriptBox[
+                   RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"hiprztotal", "[", 
+                    RowBox[{"[", "MIN", "]"}], "]"}], "-", 
+                    RowBox[{"hiplztotal", "[", 
+                    RowBox[{"[", "MIN", "]"}], "]"}]}], ")"}], "2"]}], 
+                 ")"}]}], ")"}]}], "]"}]}], "]"}]}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"\"\<Hip Angle at Max = \>\"", "<>", 
+          RowBox[{"ToString", "[", 
+           RowBox[{
+            FractionBox["180", "\[Pi]"], 
+            RowBox[{"ArcCos", "[", 
+             RowBox[{
+              RowBox[{"(", 
+               RowBox[{
+                RowBox[{"hiprxtotal", "[", 
+                 RowBox[{"[", "MAX", "]"}], "]"}], "-", 
+                RowBox[{"hiplxtotal", "[", 
+                 RowBox[{"[", "MAX", "]"}], "]"}]}], ")"}], "/", 
+              RowBox[{"(", 
+               RowBox[{"\[Sqrt]", 
+                RowBox[{"(", 
+                 RowBox[{
+                  SuperscriptBox[
+                   RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"hiprxtotal", "[", 
+                    RowBox[{"[", "MAX", "]"}], "]"}], "-", 
+                    RowBox[{"hiplxtotal", "[", 
+                    RowBox[{"[", "MAX", "]"}], "]"}]}], ")"}], "2"], "+", 
+                  SuperscriptBox[
+                   RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"hiprytotal", "[", 
+                    RowBox[{"[", "MAX", "]"}], "]"}], "-", 
+                    RowBox[{"hiplytotal", "[", 
+                    RowBox[{"[", "MAX", "]"}], "]"}]}], ")"}], "2"], "+", 
+                  SuperscriptBox[
+                   RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"hiprztotal", "[", 
+                    RowBox[{"[", "MAX", "]"}], "]"}], "-", 
+                    RowBox[{"hiplztotal", "[", 
+                    RowBox[{"[", "MAX", "]"}], "]"}]}], ")"}], "2"]}], 
+                 ")"}]}], ")"}]}], "]"}]}], "]"}]}]}], "}"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"\"\<Shoulder Angle at Min = \>\"", "<>", 
+          RowBox[{"ToString", "[", 
+           RowBox[{
+            FractionBox["180", "\[Pi]"], 
+            RowBox[{"ArcCos", "[", 
+             RowBox[{
+              RowBox[{"(", 
+               RowBox[{
+                RowBox[{"srxtotal", "[", 
+                 RowBox[{"[", "MIN", "]"}], "]"}], "-", 
+                RowBox[{"slxtotal", "[", 
+                 RowBox[{"[", "MIN", "]"}], "]"}]}], ")"}], "/", 
+              RowBox[{"(", 
+               RowBox[{"\[Sqrt]", 
+                RowBox[{"(", 
+                 RowBox[{
+                  SuperscriptBox[
+                   RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"srxtotal", "[", 
+                    RowBox[{"[", "MIN", "]"}], "]"}], "-", 
+                    RowBox[{"slxtotal", "[", 
+                    RowBox[{"[", "MIN", "]"}], "]"}]}], ")"}], "2"], "+", 
+                  SuperscriptBox[
+                   RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"srytotal", "[", 
+                    RowBox[{"[", "MIN", "]"}], "]"}], "-", 
+                    RowBox[{"slytotal", "[", 
+                    RowBox[{"[", "MIN", "]"}], "]"}]}], ")"}], "2"], "+", 
+                  SuperscriptBox[
+                   RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"srztotal", "[", 
+                    RowBox[{"[", "MIN", "]"}], "]"}], "-", 
+                    RowBox[{"slztotal", "[", 
+                    RowBox[{"[", "MIN", "]"}], "]"}]}], ")"}], "2"]}], 
+                 ")"}]}], ")"}]}], "]"}]}], "]"}]}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"\"\<Shoulder Angle at Max = \>\"", "<>", 
+          RowBox[{"ToString", "[", 
+           RowBox[{
+            FractionBox["180", "\[Pi]"], 
+            RowBox[{"ArcCos", "[", 
+             RowBox[{
+              RowBox[{"(", 
+               RowBox[{
+                RowBox[{"srxtotal", "[", 
+                 RowBox[{"[", "MAX", "]"}], "]"}], "-", 
+                RowBox[{"slxtotal", "[", 
+                 RowBox[{"[", "MAX", "]"}], "]"}]}], ")"}], "/", 
+              RowBox[{"(", 
+               RowBox[{"\[Sqrt]", 
+                RowBox[{"(", 
+                 RowBox[{
+                  SuperscriptBox[
+                   RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"srxtotal", "[", 
+                    RowBox[{"[", "MAX", "]"}], "]"}], "-", 
+                    RowBox[{"slxtotal", "[", 
+                    RowBox[{"[", "MAX", "]"}], "]"}]}], ")"}], "2"], "+", 
+                  SuperscriptBox[
+                   RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"srytotal", "[", 
+                    RowBox[{"[", "MAX", "]"}], "]"}], "-", 
+                    RowBox[{"slytotal", "[", 
+                    RowBox[{"[", "MAX", "]"}], "]"}]}], ")"}], "2"], "+", 
+                  SuperscriptBox[
+                   RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"srztotal", "[", 
+                    RowBox[{"[", "MAX", "]"}], "]"}], "-", 
+                    RowBox[{"slztotal", "[", 
+                    RowBox[{"[", "MAX", "]"}], "]"}]}], ")"}], "2"]}], 
+                 ")"}]}], ")"}]}], "]"}]}], "]"}]}]}], "}"}]}], 
+      "\[IndentingNewLine]", "}"}], "]"}]}], ",", "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{"j", ",", "1", ",", 
+     RowBox[{"Length", "[", "name", "]"}], ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"MIN", ",", "1", ",", "1395", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"MAX", ",", "1", ",", "1395", ",", "1"}], "}"}]}], 
+  "]"}]}], "Input",
+ CellChangeTimes->{
+  3.703369865287758*^9, 3.7033699152962985`*^9, {3.703370292499175*^9, 
+   3.70337040202742*^9}, {3.7033705217035956`*^9, 3.703370589370743*^9}, {
+   3.7033706520398765`*^9, 3.7033707633091173`*^9}, {3.7033708478577013`*^9, 
+   3.7033709137108393`*^9}, {3.703370945565505*^9, 3.703371022990467*^9}, {
+   3.703371061506745*^9, 3.703371220089283*^9}, {3.703371253317557*^9, 
+   3.703371306998273*^9}, {3.703371377718223*^9, 3.70337140948869*^9}, {
+   3.7033715929434824`*^9, 3.7033716058045087`*^9}, {3.703371738572993*^9, 
+   3.7033717906317067`*^9}, {3.7033719655994806`*^9, 
+   3.7033719816273165`*^9}, {3.7033720768661137`*^9, 
+   3.7033720890387383`*^9}, {3.7033725119020844`*^9, 3.703372568551215*^9}, {
+   3.7033726734045753`*^9, 3.7033727289095163`*^9}, {3.7033727867346497`*^9, 
+   3.7033728106481037`*^9}, 3.7033728419263783`*^9, {3.7033731064915085`*^9, 
+   3.703373151989663*^9}, {3.70337320476303*^9, 3.7033732482295604`*^9}, {
+   3.7033733499222293`*^9, 3.7033734370576286`*^9}, {3.7033736715223365`*^9, 
+   3.7033738579781713`*^9}, {3.7033738995535493`*^9, 
+   3.7033739378667407`*^9}, {3.7033740351139894`*^9, 3.7033740753254676`*^9}, 
+   3.7033741372853928`*^9, {3.703374172501258*^9, 3.703374354088*^9}, {
+   3.703374539314094*^9, 3.703374550801318*^9}, {3.703374624990679*^9, 
+   3.703374692565544*^9}, {3.703374801696786*^9, 3.7033748320495214`*^9}, {
+   3.703374878506179*^9, 3.7033752922688446`*^9}, {3.703375596650111*^9, 
+   3.7033758402127633`*^9}, {3.7033758856413617`*^9, 3.7033761230549407`*^9}, 
+   3.703376217243328*^9, {3.7033762840351486`*^9, 3.7033763225293503`*^9}, {
+   3.7033770286239123`*^9, 3.703377038757492*^9}, {3.703377127765583*^9, 
+   3.7033771328028708`*^9}, {3.7033771696609793`*^9, 
+   3.7033772664695168`*^9}, {3.703377306417801*^9, 3.7033773578597436`*^9}, {
+   3.7033774196642785`*^9, 3.703377438757371*^9}, {3.7033774747754307`*^9, 
+   3.7033775217121153`*^9}, {3.7033775783743563`*^9, 3.703377600084598*^9}, {
+   3.7033776339885373`*^9, 3.703377706627692*^9}, {3.703378401731098*^9, 
+   3.7033784032911015`*^9}, {3.707477587208235*^9, 3.7074775910027103`*^9}, {
+   3.7074776259456673`*^9, 3.7074776406403112`*^9}, {3.707477830877881*^9, 
+   3.70747783260187*^9}, {3.7074778937754717`*^9, 3.7074778958644133`*^9}, {
+   3.707477946539875*^9, 3.707477946938137*^9}, {3.707479347302129*^9, 
+   3.707479513478442*^9}, {3.707490067335767*^9, 3.7074900909951563`*^9}}],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{$CellContext`j$$ = 1, $CellContext`MAX$$ = 
+    1, $CellContext`MIN$$ = 1, Typeset`show$$ = True, 
+    Typeset`bookmarkList$$ = {}, Typeset`bookmarkMode$$ = "Menu", 
+    Typeset`animator$$, Typeset`animvar$$ = 1, Typeset`name$$ = 
+    "\"untitled\"", Typeset`specs$$ = {{
+      Hold[$CellContext`j$$], 1, 304, 1}, {
+      Hold[$CellContext`MIN$$], 1, 1395, 1}, {
+      Hold[$CellContext`MAX$$], 1, 1395, 1}}, Typeset`size$$ = {
+    1222., {278.134033203125, 283.865966796875}}, Typeset`update$$ = 0, 
+    Typeset`initDone$$, Typeset`skipInitDone$$ = True, $CellContext`j$9888$$ =
+     0, $CellContext`MIN$9889$$ = 0, $CellContext`MAX$9890$$ = 0}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     1, StandardForm, 
+      "Variables" :> {$CellContext`j$$ = 1, $CellContext`MAX$$ = 
+        1, $CellContext`MIN$$ = 1}, "ControllerVariables" :> {
+        Hold[$CellContext`j$$, $CellContext`j$9888$$, 0], 
+        Hold[$CellContext`MIN$$, $CellContext`MIN$9889$$, 0], 
+        Hold[$CellContext`MAX$$, $CellContext`MAX$9890$$, 0]}, 
+      "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$}, "Body" :> ($CellContext`data = Flatten[
+          Import[
+           Part[$CellContext`name, $CellContext`j$$], 
+           "CSV"]]; $CellContext`amtotal = Table[
+          
+          Part[$CellContext`data, 39 + 
+           77 ($CellContext`i - 1)], {$CellContext`i, 2, 
+           Length[$CellContext`data]/77}]; $CellContext`ctotal = Table[
+          
+          Part[$CellContext`data, 3 + 
+           77 ($CellContext`i - 1)], {$CellContext`i, 2, 
+           Length[$CellContext`data]/77}]; $CellContext`dtotal = Table[
+          
+          Part[$CellContext`data, 4 + 
+           77 ($CellContext`i - 1)], {$CellContext`i, 2, 
+           Length[$CellContext`data]/77}]; $CellContext`aztotal = Table[
+          Part[$CellContext`data, 52 + 
+           77 ($CellContext`i - 1)], {$CellContext`i, 2, 
+           Length[$CellContext`data]/77}]; $CellContext`antotal = Table[
+          
+          Part[$CellContext`data, 40 + 
+           77 ($CellContext`i - 1)], {$CellContext`i, 2, 
+           Length[$CellContext`data]/77}]; $CellContext`aptotal = Table[
+          
+          Part[$CellContext`data, 42 + 
+           77 ($CellContext`i - 1)], {$CellContext`i, 2, 
+           Length[$CellContext`data]/77}]; $CellContext`aqtotal = Table[
+          
+          Part[$CellContext`data, 43 + 
+           77 ($CellContext`i - 1)], {$CellContext`i, 2, 
+           Length[$CellContext`data]/77}]; $CellContext`artotal = Table[
+          
+          Part[$CellContext`data, 44 + 
+           77 ($CellContext`i - 1)], {$CellContext`i, 2, 
+           Length[$CellContext`data]/77}]; $CellContext`bbtotal = Table[
+          
+          Part[$CellContext`data, 54 + 
+           77 ($CellContext`i - 1)], {$CellContext`i, 2, 
+           Length[$CellContext`data]/77}]; $CellContext`bctotal = Table[
+          
+          Part[$CellContext`data, 55 + 
+           77 ($CellContext`i - 1)], {$CellContext`i, 2, 
+           Length[$CellContext`data]/77}]; $CellContext`bdtotal = Table[
+          
+          Part[$CellContext`data, 56 + 
+           77 ($CellContext`i - 1)], {$CellContext`i, 2, 
+           Length[$CellContext`data]/77}]; $CellContext`betotal = Table[
+          
+          Part[$CellContext`data, 48 + 
+           77 ($CellContext`i - 1)], {$CellContext`i, 2, 
+           Length[$CellContext`data]/77}]; $CellContext`bftotal = Table[
+          
+          Part[$CellContext`data, 49 + 
+           77 ($CellContext`i - 1)], {$CellContext`i, 2, 
+           Length[$CellContext`data]/77}]; $CellContext`bgtotal = Table[
+          
+          Part[$CellContext`data, 50 + 
+           77 ($CellContext`i - 1)], {$CellContext`i, 2, 
+           Length[$CellContext`data]/77}]; $CellContext`bhtotal = Table[
+          
+          Part[$CellContext`data, 60 + 
+           77 ($CellContext`i - 1)], {$CellContext`i, 2, 
+           Length[$CellContext`data]/77}]; $CellContext`bitotal = Table[
+          
+          Part[$CellContext`data, 61 + 
+           77 ($CellContext`i - 1)], {$CellContext`i, 2, 
+           Length[$CellContext`data]/77}]; $CellContext`bjtotal = Table[
+          Part[$CellContext`data, 62 + 
+           77 ($CellContext`i - 1)], {$CellContext`i, 2, 
+           Length[$CellContext`data]/77}]; $CellContext`anrxtotal = Table[
+          
+          Part[$CellContext`data, 57 + 
+           77 ($CellContext`i - 1)], {$CellContext`i, 2, 
+           Length[$CellContext`data]/77}]; $CellContext`anrytotal = Table[
+          
+          Part[$CellContext`data, 58 + 
+           77 ($CellContext`i - 1)], {$CellContext`i, 2, 
+           Length[$CellContext`data]/77}]; $CellContext`anrztotal = Table[
+          
+          Part[$CellContext`data, 59 + 
+           77 ($CellContext`i - 1)], {$CellContext`i, 2, 
+           Length[$CellContext`data]/77}]; $CellContext`anlxtotal = Table[
+          
+          Part[$CellContext`data, 45 + 
+           77 ($CellContext`i - 1)], {$CellContext`i, 2, 
+           Length[$CellContext`data]/77}]; $CellContext`anlytotal = Table[
+          
+          Part[$CellContext`data, 46 + 
+           77 ($CellContext`i - 1)], {$CellContext`i, 2, 
+           Length[$CellContext`data]/77}]; $CellContext`anlztotal = Table[
+          
+          Part[$CellContext`data, 47 + 
+           77 ($CellContext`i - 1)], {$CellContext`i, 2, 
+           Length[$CellContext`data]/77}]; $CellContext`hiprxtotal = Table[
+          
+          Part[$CellContext`data, 51 + 
+           77 ($CellContext`i - 1)], {$CellContext`i, 2, 
+           Length[$CellContext`data]/77}]; $CellContext`hiprytotal = Table[
+          
+          Part[$CellContext`data, 52 + 
+           77 ($CellContext`i - 1)], {$CellContext`i, 2, 
+           Length[$CellContext`data]/77}]; $CellContext`hiprztotal = Table[
+          
+          Part[$CellContext`data, 53 + 
+           77 ($CellContext`i - 1)], {$CellContext`i, 2, 
+           Length[$CellContext`data]/77}]; $CellContext`hiplxtotal = Table[
+          
+          Part[$CellContext`data, 39 + 
+           77 ($CellContext`i - 1)], {$CellContext`i, 2, 
+           Length[$CellContext`data]/77}]; $CellContext`hiplytotal = Table[
+          
+          Part[$CellContext`data, 40 + 
+           77 ($CellContext`i - 1)], {$CellContext`i, 2, 
+           Length[$CellContext`data]/77}]; $CellContext`hiplztotal = Table[
+          
+          Part[$CellContext`data, 41 + 
+           77 ($CellContext`i - 1)], {$CellContext`i, 2, 
+           Length[$CellContext`data]/77}]; $CellContext`spinextotal = Table[
+          
+          Part[$CellContext`data, 3 + 
+           77 ($CellContext`i - 1)], {$CellContext`i, 2, 
+           Length[$CellContext`data]/77}]; $CellContext`spineytotal = Table[
+          
+          Part[$CellContext`data, 4 + 
+           77 ($CellContext`i - 1)], {$CellContext`i, 2, 
+           Length[$CellContext`data]/77}]; $CellContext`spineztotal = Table[
+          
+          Part[$CellContext`data, 5 + 
+           77 ($CellContext`i - 1)], {$CellContext`i, 2, 
+           Length[$CellContext`data]/77}]; $CellContext`srxtotal = Table[
+          
+          Part[$CellContext`data, 27 + 
+           77 ($CellContext`i - 1)], {$CellContext`i, 2, 
+           Length[$CellContext`data]/77}]; $CellContext`srytotal = Table[
+          
+          Part[$CellContext`data, 28 + 
+           77 ($CellContext`i - 1)], {$CellContext`i, 2, 
+           Length[$CellContext`data]/77}]; $CellContext`srztotal = Table[
+          
+          Part[$CellContext`data, 29 + 
+           77 ($CellContext`i - 1)], {$CellContext`i, 2, 
+           Length[$CellContext`data]/77}]; $CellContext`slxtotal = Table[
+          
+          Part[$CellContext`data, 15 + 
+           77 ($CellContext`i - 1)], {$CellContext`i, 2, 
+           Length[$CellContext`data]/77}]; $CellContext`slytotal = Table[
+          
+          Part[$CellContext`data, 16 + 
+           77 ($CellContext`i - 1)], {$CellContext`i, 2, 
+           Length[$CellContext`data]/77}]; $CellContext`slztotal = Table[
+          
+          Part[$CellContext`data, 17 + 
+           77 ($CellContext`i - 1)], {$CellContext`i, 2, 
+           Length[$CellContext`data]/
+           77}]; $CellContext`min = $CellContext`MIN$$; $CellContext`max = \
+$CellContext`MAX$$; $CellContext`resc = Table[
+          
+          Part[$CellContext`ctotal, $CellContext`i], {$CellContext`i, \
+$CellContext`min, $CellContext`max}]; $CellContext`resd = Table[
+          
+          Part[$CellContext`dtotal, $CellContext`i], {$CellContext`i, \
+$CellContext`min, $CellContext`max}]; $CellContext`resaz = Table[
+          
+          Part[$CellContext`aztotal, $CellContext`i], {$CellContext`i, \
+$CellContext`min, $CellContext`max}]; $CellContext`resan = Table[
+          
+          Part[$CellContext`antotal, $CellContext`i], {$CellContext`i, \
+$CellContext`min, $CellContext`max}]; Grid[{{
+           ListPlot[{$CellContext`ctotal, $CellContext`resc, 
+             LowpassFilter[$CellContext`ctotal, 0.25]}, ImageSize -> Large, 
+            PlotLabel -> Part[$CellContext`name, $CellContext`j$$]]}, {
+           StringJoin["Spine Base X =", 
+            ToString[Max[$CellContext`ctotal] - Min[$CellContext`ctotal]]], 
+           StringJoin["Spine Base Y =", 
+            ToString[Max[$CellContext`dtotal] - Min[$CellContext`dtotal]]]}, {
+           StringJoin["Hip Left X =", 
+            ToString[Max[$CellContext`amtotal] - Min[$CellContext`amtotal]]], 
+           StringJoin["Hip Left Y =", 
+            ToString[
+            Max[$CellContext`antotal] - Min[$CellContext`antotal]]]}, {
+           StringJoin["Hip Right X =", 
+            ToString[
+            Max[$CellContext`hiprxtotal] - Min[$CellContext`hiprxtotal]]], 
+           StringJoin["Hip Right Y =", 
+            ToString[
+            Max[$CellContext`hiprytotal] - Min[$CellContext`hiprytotal]]]}, {
+           StringJoin["Spine Base Y (max- min) = ", 
+            ToString[Max[$CellContext`resd] - Min[$CellContext`resd]]], 
+           StringJoin["Hip Right (max- min) = ", 
+            ToString[Max[$CellContext`resaz] - Min[$CellContext`resaz]]], 
+           StringJoin["Hip Left (max- min) = ", 
+            ToString[Max[$CellContext`resan] - Min[$CellContext`resan]]], 
+           StringJoin["Hip Left (max- min) = ", 
+            ToString[Max[$CellContext`resan] - Min[$CellContext`resan]]]}, {
+           StringJoin["Knee Left Distance = ", 
+            ToString[
+             
+             Sqrt[(Part[$CellContext`aptotal, $CellContext`MAX$$] - 
+                Part[$CellContext`aptotal, $CellContext`MIN$$])^2 + (
+                Part[$CellContext`aqtotal, $CellContext`MAX$$] - 
+                Part[$CellContext`aqtotal, $CellContext`MIN$$])^2 + (
+                Part[$CellContext`artotal, $CellContext`MAX$$] - 
+                Part[$CellContext`artotal, $CellContext`MIN$$])^2]]], 
+           StringJoin["Knee Right Distance = ", 
+            ToString[
+             
+             Sqrt[(Part[$CellContext`bbtotal, $CellContext`MAX$$] - 
+                Part[$CellContext`bbtotal, $CellContext`MIN$$])^2 + (
+                Part[$CellContext`bctotal, $CellContext`MAX$$] - 
+                Part[$CellContext`bctotal, $CellContext`MIN$$])^2 + (
+                Part[$CellContext`bdtotal, $CellContext`MAX$$] - 
+                Part[$CellContext`bdtotal, $CellContext`MIN$$])^2]]]}, {
+           StringJoin["Foot Left Distance = ", 
+            ToString[
+             
+             Sqrt[(Part[$CellContext`betotal, $CellContext`MAX$$] - 
+                Part[$CellContext`betotal, $CellContext`MIN$$])^2 + (
+                Part[$CellContext`bftotal, $CellContext`MAX$$] - 
+                Part[$CellContext`bftotal, $CellContext`MIN$$])^2 + (
+                Part[$CellContext`bgtotal, $CellContext`MAX$$] - 
+                Part[$CellContext`bgtotal, $CellContext`MIN$$])^2]]], 
+           StringJoin["Foot Right Distance = ", 
+            ToString[
+             
+             Sqrt[(Part[$CellContext`bhtotal, $CellContext`MAX$$] - 
+                Part[$CellContext`bhtotal, $CellContext`MIN$$])^2 + (
+                Part[$CellContext`bitotal, $CellContext`MAX$$] - 
+                Part[$CellContext`bitotal, $CellContext`MIN$$])^2 + (
+                Part[$CellContext`bjtotal, $CellContext`MAX$$] - 
+                Part[$CellContext`bjtotal, $CellContext`MIN$$])^2]]]}, {
+           StringJoin["Ankle Left Distance = ", 
+            ToString[
+             
+             Sqrt[(Part[$CellContext`anlxtotal, $CellContext`MAX$$] - 
+                Part[$CellContext`anlxtotal, $CellContext`MIN$$])^2 + (
+                Part[$CellContext`anlytotal, $CellContext`MAX$$] - 
+                Part[$CellContext`anlytotal, $CellContext`MIN$$])^2 + (
+                Part[$CellContext`anlztotal, $CellContext`MAX$$] - 
+                Part[$CellContext`anlztotal, $CellContext`MIN$$])^2]]], 
+           StringJoin["Ankle Right Distance = ", 
+            ToString[
+             
+             Sqrt[(Part[$CellContext`anrxtotal, $CellContext`MAX$$] - 
+                Part[$CellContext`anrxtotal, $CellContext`MIN$$])^2 + (
+                Part[$CellContext`anrytotal, $CellContext`MAX$$] - 
+                Part[$CellContext`anrytotal, $CellContext`MIN$$])^2 + (
+                Part[$CellContext`anrztotal, $CellContext`MAX$$] - 
+                Part[$CellContext`anrztotal, $CellContext`MIN$$])^2]]]}, {
+           StringJoin["Hip Left Distance = ", 
+            ToString[
+             
+             Sqrt[(Part[$CellContext`hiplxtotal, $CellContext`MAX$$] - 
+                Part[$CellContext`hiplxtotal, $CellContext`MIN$$])^2 + (
+                Part[$CellContext`hiplytotal, $CellContext`MAX$$] - 
+                Part[$CellContext`hiplytotal, $CellContext`MIN$$])^2 + (
+                Part[$CellContext`hiplztotal, $CellContext`MAX$$] - 
+                Part[$CellContext`hiplztotal, $CellContext`MIN$$])^2]]], 
+           StringJoin["Hip Right Distance = ", 
+            ToString[
+             
+             Sqrt[(Part[$CellContext`hiprxtotal, $CellContext`MAX$$] - 
+                Part[$CellContext`hiprxtotal, $CellContext`MIN$$])^2 + (
+                Part[$CellContext`hiprytotal, $CellContext`MAX$$] - 
+                Part[$CellContext`hiprytotal, $CellContext`MIN$$])^2 + (
+                Part[$CellContext`hiprztotal, $CellContext`MAX$$] - 
+                Part[$CellContext`hiprztotal, $CellContext`MIN$$])^2]]]}, {
+           StringJoin["Spine Distance = ", 
+            ToString[
+             
+             Sqrt[(Part[$CellContext`spinextotal, $CellContext`MAX$$] - 
+                Part[$CellContext`spinextotal, $CellContext`MIN$$])^2 + (
+                Part[$CellContext`spineytotal, $CellContext`MAX$$] - 
+                Part[$CellContext`spineytotal, $CellContext`MIN$$])^2 + (
+                Part[$CellContext`spineztotal, $CellContext`MAX$$] - 
+                Part[$CellContext`spineztotal, $CellContext`MIN$$])^2]]]}, {
+           StringJoin["Hip Angle at Min = ", 
+            
+            ToString[(180/Pi) 
+             ArcCos[(Part[$CellContext`hiprxtotal, $CellContext`MIN$$] - 
+                Part[$CellContext`hiplxtotal, $CellContext`MIN$$])/
+               Sqrt[(Part[$CellContext`hiprxtotal, $CellContext`MIN$$] - 
+                  Part[$CellContext`hiplxtotal, $CellContext`MIN$$])^2 + (
+                  Part[$CellContext`hiprytotal, $CellContext`MIN$$] - 
+                  Part[$CellContext`hiplytotal, $CellContext`MIN$$])^2 + (
+                  Part[$CellContext`hiprztotal, $CellContext`MIN$$] - 
+                  Part[$CellContext`hiplztotal, $CellContext`MIN$$])^2]]]], 
+           StringJoin["Hip Angle at Max = ", 
+            
+            ToString[(180/Pi) 
+             ArcCos[(Part[$CellContext`hiprxtotal, $CellContext`MAX$$] - 
+                Part[$CellContext`hiplxtotal, $CellContext`MAX$$])/
+               Sqrt[(Part[$CellContext`hiprxtotal, $CellContext`MAX$$] - 
+                  Part[$CellContext`hiplxtotal, $CellContext`MAX$$])^2 + (
+                  Part[$CellContext`hiprytotal, $CellContext`MAX$$] - 
+                  Part[$CellContext`hiplytotal, $CellContext`MAX$$])^2 + (
+                  Part[$CellContext`hiprztotal, $CellContext`MAX$$] - 
+                  Part[$CellContext`hiplztotal, $CellContext`MAX$$])^2]]]]}, {
+           StringJoin["Shoulder Angle at Min = ", 
+            
+            ToString[(180/Pi) 
+             ArcCos[(Part[$CellContext`srxtotal, $CellContext`MIN$$] - 
+                Part[$CellContext`slxtotal, $CellContext`MIN$$])/
+               Sqrt[(Part[$CellContext`srxtotal, $CellContext`MIN$$] - 
+                  Part[$CellContext`slxtotal, $CellContext`MIN$$])^2 + (
+                  Part[$CellContext`srytotal, $CellContext`MIN$$] - 
+                  Part[$CellContext`slytotal, $CellContext`MIN$$])^2 + (
+                  Part[$CellContext`srztotal, $CellContext`MIN$$] - 
+                  Part[$CellContext`slztotal, $CellContext`MIN$$])^2]]]], 
+           StringJoin["Shoulder Angle at Max = ", 
+            
+            ToString[(180/Pi) 
+             ArcCos[(Part[$CellContext`srxtotal, $CellContext`MAX$$] - 
+                Part[$CellContext`slxtotal, $CellContext`MAX$$])/
+               Sqrt[(Part[$CellContext`srxtotal, $CellContext`MAX$$] - 
+                  Part[$CellContext`slxtotal, $CellContext`MAX$$])^2 + (
+                  Part[$CellContext`srytotal, $CellContext`MAX$$] - 
+                  Part[$CellContext`slytotal, $CellContext`MAX$$])^2 + (
+                  Part[$CellContext`srztotal, $CellContext`MAX$$] - 
+                  Part[$CellContext`slztotal, $CellContext`MAX$$])^2]]]]}}]), 
+      "Specifications" :> {{$CellContext`j$$, 1, 304, 1}, {$CellContext`MIN$$,
+          1, 1395, 1}, {$CellContext`MAX$$, 1, 1395, 1}}, "Options" :> {}, 
+      "DefaultOptions" :> {}],
+     ImageSizeCache->{1267., {352., 358.}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    SynchronousInitialization->True,
+    UndoTrackedVariables:>{Typeset`show$$, Typeset`bookmarkMode$$},
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output",
+ CellChangeTimes->{3.707490078582776*^9}]
+}, Open  ]]
+},
+WindowSize->{1240, 686},
+WindowMargins->{{Automatic, -1265}, {-26, Automatic}},
+FrontEndVersion->"11.0 for Mac OS X x86 (32-bit, 64-bit Kernel) (July 28, \
+2016)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 42762, 1120, 2259, "Input"],
+Cell[43345, 1144, 18504, 358, 727, "Output"]
+}, Open  ]]
+}
+]
+*)
+
